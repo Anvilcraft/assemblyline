@@ -1,0 +1,11 @@
+{
+    "conveyor": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "conveyor",
+                "stream": false
+            }
+        ]
+    }
+}

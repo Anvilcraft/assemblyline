@@ -17,6 +17,9 @@ buildscript {
 
 apply plugin: 'forge'
 
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
 version = "1.0"
 group= "modgroup"
 archivesBaseName = "modid"
@@ -26,8 +29,12 @@ minecraft {
     runDir = "run"
 }
 
-dependencies {
+repositories {
+    maven { url = "https://maven.tilera.xyz" }
+}
 
+dependencies {
+    compile "universalelectricity:basiccomponents:1.0.2-dirty:deobf"
 }
 
 processResources
