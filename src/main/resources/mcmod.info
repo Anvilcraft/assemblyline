@@ -3,16 +3,15 @@
   "modid" : "AssemblyLine",
   "name" : "Assembly Line",
   "version" : "0.2.8",
-  "url" : "http://calclavia.com/universalelectricity/?m=18",
+  "url" : "https://git.tilera.org/Anvilcraft/assemblyline",
   "credits" : "",
   "authors": [
     "Calclavia",
-	"Darkguardsman",
-	"Briman"
+	  "Darkguardsman",
+	  "Briman"
   ],
   "description": "A mod that brings conveyor belt transporting systems to Minecraft.",
-  "logoFile" : "/al_logo.png",
-  "updateUrl" : "http://universalelectricity.com/?m=assembly_line",
+  "logoFile" : "al_logo.png",
   "parent" : "",
   "screenshots": [
   ]

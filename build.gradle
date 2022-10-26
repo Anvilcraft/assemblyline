@@ -20,9 +20,9 @@ apply plugin: 'forge'
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
-version = "1.0"
-group= "modgroup"
-archivesBaseName = "modid"
+version = "1.0.0"
+group= "universalelectricity"
+archivesBaseName = "assemblyline"
 
 minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"
