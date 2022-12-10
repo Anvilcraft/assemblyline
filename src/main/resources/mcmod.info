@@ -2,13 +2,14 @@
 {
   "modid" : "AssemblyLine",
   "name" : "Assembly Line",
-  "version" : "0.2.8",
+  "version" : "1.0.0",
   "url" : "https://git.tilera.org/Anvilcraft/assemblyline",
   "credits" : "",
   "authors": [
     "Calclavia",
 	  "Darkguardsman",
-	  "Briman"
+	  "Briman",
+    "tilera"
   ],
   "description": "A mod that brings conveyor belt transporting systems to Minecraft.",
   "logoFile" : "al_logo.png",

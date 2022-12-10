@@ -48,15 +48,11 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import universalelectricity.prefab.TranslationHelper;
 import universalelectricity.prefab.multiblock.BlockMulti;
 
-@Mod(modid="AssemblyLine", name="Assembly Line", version="0.3.5.117", dependencies="after:BasicComponents; after:IC2", useMetadata=true)
+@Mod(modid="AssemblyLine", name="Assembly Line", version=AssemblyLine.VERSION, dependencies="required-after:basiccomponents", useMetadata=true)
 public class AssemblyLine {
-    public static final String MAJOR_VERSION = "0";
-    public static final String MINOR_VERSION = "3";
-    public static final String REVIS_VERSION = "5";
-    public static final String BUILD_VERSION = "117";
     public static final String MOD_ID = "AssemblyLine";
     public static final String MOD_NAME = "Assembly Line";
-    public static final String VERSION = "0.3.5.117";
+    public static final String VERSION = "1.0.0";
     public static final String CHANNEL = "AssemblyLine";
     @SidedProxy(clientSide="assemblyline.client.ClientProxy", serverSide="assemblyline.common.CommonProxy")
     public static CommonProxy proxy;
