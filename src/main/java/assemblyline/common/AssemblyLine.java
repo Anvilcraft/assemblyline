@@ -137,14 +137,14 @@ public class AssemblyLine {
 
     private void createUERecipes() {
         System.out.println("BasicComponents Found...adding UE recipes for Assembly Line.");
-        GameRegistry.addRecipe((IRecipe)new ShapedOreRecipe(blockArmbot, new Object[]{"II ", "SIS", "MCM", Character.valueOf('S'), "plateSteel", Character.valueOf('C'), "advancedCircuit", Character.valueOf('I'), "ingotSteel", Character.valueOf('M'), "motor"}));
-        GameRegistry.addRecipe((IRecipe)new ShapedOreRecipe(itemDisk, new Object[]{"III", "ICI", "III", Character.valueOf('I'), itemImprint, Character.valueOf('C'), "advancedCircuit"}));
-        GameRegistry.addRecipe((IRecipe)new ShapedOreRecipe(blockEncoder, new Object[]{"SIS", "SCS", "SSS", Character.valueOf('I'), itemImprint, Character.valueOf('S'), "ingotSteel", Character.valueOf('C'), "advancedCircuit"}));
-        GameRegistry.addRecipe((IRecipe)new ShapedOreRecipe(blockDetector, new Object[]{"SES", "SCS", "S S", Character.valueOf('S'), "ingotSteel", Character.valueOf('C'), "basicCircuit", Character.valueOf('E'), Items.ender_eye}));
+        GameRegistry.addRecipe((IRecipe)new ShapedOreRecipe(blockArmbot, new Object[]{"II ", "SIS", "MCM", Character.valueOf('S'), "plateSteel", Character.valueOf('C'), "circuitAdvanced", Character.valueOf('I'), "ingotSteel", Character.valueOf('M'), "motor"}));
+        GameRegistry.addRecipe((IRecipe)new ShapedOreRecipe(itemDisk, new Object[]{"III", "ICI", "III", Character.valueOf('I'), itemImprint, Character.valueOf('C'), "circuitAdvanced"}));
+        GameRegistry.addRecipe((IRecipe)new ShapedOreRecipe(blockEncoder, new Object[]{"SIS", "SCS", "SSS", Character.valueOf('I'), itemImprint, Character.valueOf('S'), "ingotSteel", Character.valueOf('C'), "circuitAdvanced"}));
+        GameRegistry.addRecipe((IRecipe)new ShapedOreRecipe(blockDetector, new Object[]{"SES", "SCS", "S S", Character.valueOf('S'), "ingotSteel", Character.valueOf('C'), "circuitBasic", Character.valueOf('E'), Items.ender_eye}));
         GameRegistry.addRecipe((IRecipe)new ShapedOreRecipe(new ItemStack(blockConveyorBelt, 10), new Object[]{"III", "WMW", Character.valueOf('I'), "ingotSteel", Character.valueOf('W'), Blocks.planks, Character.valueOf('M'), "motor"}));
-        GameRegistry.addRecipe((IRecipe)new ShapedOreRecipe(blockRejector, new Object[]{"WPW", "@R@", Character.valueOf('@'), "ingotSteel", Character.valueOf('R'), Items.redstone, Character.valueOf('P'), Blocks.piston, Character.valueOf('C'), "basicCircuit", Character.valueOf('W'), "copperWire"}));
+        GameRegistry.addRecipe((IRecipe)new ShapedOreRecipe(blockRejector, new Object[]{"WPW", "@R@", Character.valueOf('@'), "ingotSteel", Character.valueOf('R'), Items.redstone, Character.valueOf('P'), Blocks.piston, Character.valueOf('C'), "circuitBasic", Character.valueOf('W'), "copperWire"}));
         GameRegistry.addRecipe((IRecipe)new ShapedOreRecipe(blockTurntable, new Object[]{"M", "P", Character.valueOf('M'), "motor", Character.valueOf('P'), Blocks.piston}));
-        GameRegistry.addRecipe((IRecipe)new ShapelessOreRecipe(new ItemStack(blockManipulator, 2), new Object[]{Blocks.dispenser, "basicCircuit"}));
+        GameRegistry.addRecipe((IRecipe)new ShapelessOreRecipe(new ItemStack(blockManipulator, 2), new Object[]{Blocks.dispenser, "circuitBasic"}));
     }
 
     private void createStandardRecipes() {
