@@ -52,7 +52,7 @@ import universalelectricity.prefab.multiblock.BlockMulti;
 public class AssemblyLine {
     public static final String MOD_ID = "AssemblyLine";
     public static final String MOD_NAME = "Assembly Line";
-    public static final String VERSION = "1.0.0";
+    public static final String VERSION = "1.0.2";
     public static final String CHANNEL = "AssemblyLine";
     @SidedProxy(clientSide="assemblyline.client.ClientProxy", serverSide="assemblyline.common.CommonProxy")
     public static CommonProxy proxy;
@@ -120,6 +120,7 @@ public class AssemblyLine {
         GameRegistry.registerBlock(blockTurntable, "turntable");
         GameRegistry.registerBlock(blockCraneController, "crane_controller");
         GameRegistry.registerBlock(blockCraneFrame, "crane_frame");
+        GameRegistry.registerBlock(blockMulti, "block_multi");
         GameRegistry.registerItem(itemDisk, "disk");
         GameRegistry.registerItem(itemImprint, "imprint");
         TabAssemblyLine.itemStack = new ItemStack(blockConveyorBelt);
