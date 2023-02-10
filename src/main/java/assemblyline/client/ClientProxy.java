@@ -32,8 +32,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ClientProxy
-extends CommonProxy {
+public class ClientProxy extends CommonProxy {
     @Override
     public void preInit() {
         RenderingRegistry.registerBlockHandler(new BlockRenderingHandler());
@@ -42,27 +41,52 @@ extends CommonProxy {
     @Override
     public void init() {
         super.init();
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityConveyorBelt.class, (TileEntitySpecialRenderer)new RenderConveyorBelt());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRejector.class, (TileEntitySpecialRenderer)new RenderRejector());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityManipulator.class, (TileEntitySpecialRenderer)new RenderManipulator());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrate.class, (TileEntitySpecialRenderer)new RenderCrate());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArmbot.class, (TileEntitySpecialRenderer)new RenderArmbot());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDetector.class, (TileEntitySpecialRenderer)new RenderDetector());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCraneController.class, (TileEntitySpecialRenderer)new RenderCraneController());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCraneRail.class, (TileEntitySpecialRenderer)new RenderCraneFrame());
+        ClientRegistry.bindTileEntitySpecialRenderer(
+            TileEntityConveyorBelt.class,
+            (TileEntitySpecialRenderer) new RenderConveyorBelt()
+        );
+        ClientRegistry.bindTileEntitySpecialRenderer(
+            TileEntityRejector.class, (TileEntitySpecialRenderer) new RenderRejector()
+        );
+        ClientRegistry.bindTileEntitySpecialRenderer(
+            TileEntityManipulator.class,
+            (TileEntitySpecialRenderer) new RenderManipulator()
+        );
+        ClientRegistry.bindTileEntitySpecialRenderer(
+            TileEntityCrate.class, (TileEntitySpecialRenderer) new RenderCrate()
+        );
+        ClientRegistry.bindTileEntitySpecialRenderer(
+            TileEntityArmbot.class, (TileEntitySpecialRenderer) new RenderArmbot()
+        );
+        ClientRegistry.bindTileEntitySpecialRenderer(
+            TileEntityDetector.class, (TileEntitySpecialRenderer) new RenderDetector()
+        );
+        ClientRegistry.bindTileEntitySpecialRenderer(
+            TileEntityCraneController.class,
+            (TileEntitySpecialRenderer) new RenderCraneController()
+        );
+        ClientRegistry.bindTileEntitySpecialRenderer(
+            TileEntityCraneRail.class, (TileEntitySpecialRenderer) new RenderCraneFrame()
+        );
     }
 
     @Override
-    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    public Object
+    getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (tileEntity != null) {
             switch (ID) {
                 case 1: {
-                    return new GuiImprinter(player.inventory, (TileEntityImprinter)tileEntity);
+                    return new GuiImprinter(
+                        player.inventory, (TileEntityImprinter) tileEntity
+                    );
                 }
                 case 2: {
-                    if (tileEntity == null || !(tileEntity instanceof TileEntityEncoder)) break;
-                    return new GuiEncoder(player.inventory, (TileEntityEncoder)tileEntity);
+                    if (tileEntity == null || !(tileEntity instanceof TileEntityEncoder))
+                        break;
+                    return new GuiEncoder(
+                        player.inventory, (TileEntityEncoder) tileEntity
+                    );
                 }
             }
         }
@@ -74,4 +98,3 @@ extends CommonProxy {
         return GuiScreen.isCtrlKeyDown();
     }
 }
-

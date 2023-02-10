@@ -8,8 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 
-public class CommandUse
-extends Command {
+public class CommandUse extends Command {
     private int times;
     private int curTimes;
 
@@ -27,19 +26,33 @@ extends Command {
 
     @Override
     protected boolean doTask() {
-        Block block = this.world.getBlock(this.tileEntity.getHandPosition().intX(), this.tileEntity.getHandPosition().intY(), this.tileEntity.getHandPosition().intZ());
-        TileEntity targetTile = this.tileEntity.getHandPosition().getTileEntity((IBlockAccess)this.world);
+        Block block = this.world.getBlock(
+            this.tileEntity.getHandPosition().intX(),
+            this.tileEntity.getHandPosition().intY(),
+            this.tileEntity.getHandPosition().intZ()
+        );
+        TileEntity targetTile
+            = this.tileEntity.getHandPosition().getTileEntity((IBlockAccess) this.world);
         if (targetTile != null) {
             if (targetTile instanceof IArmbotUseable) {
-                ((IArmbotUseable)targetTile).onUse(this.tileEntity, this.getArgs());
+                ((IArmbotUseable) targetTile).onUse(this.tileEntity, this.getArgs());
             } else if (targetTile instanceof ISidedInventory && this.tileEntity.getGrabbedEntities().size() > 0) {
                 // empty if block
             }
         } else if (block != null) {
             try {
-                boolean f = block.onBlockActivated(this.world, this.tileEntity.getHandPosition().intX(), this.tileEntity.getHandPosition().intY(), this.tileEntity.getHandPosition().intZ(), null, 0, 0.0f, 0.0f, 0.0f);
-            }
-            catch (Exception e) {
+                boolean f = block.onBlockActivated(
+                    this.world,
+                    this.tileEntity.getHandPosition().intX(),
+                    this.tileEntity.getHandPosition().intY(),
+                    this.tileEntity.getHandPosition().intZ(),
+                    null,
+                    0,
+                    0.0f,
+                    0.0f,
+                    0.0f
+                );
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -66,4 +79,3 @@ extends Command {
         taskCompound.setInteger("useCurTimes", this.curTimes);
     }
 }
-

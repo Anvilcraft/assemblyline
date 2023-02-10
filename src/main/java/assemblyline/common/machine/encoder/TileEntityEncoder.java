@@ -1,12 +1,13 @@
 package assemblyline.common.machine.encoder;
 
+import java.util.ArrayList;
+
 import assemblyline.common.machine.command.Command;
 import assemblyline.common.machine.encoder.IInventoryWatcher;
 import assemblyline.common.machine.encoder.ItemDisk;
 import com.google.common.io.ByteArrayDataInput;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
-import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -14,9 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import universalelectricity.prefab.tile.TileEntityAdvanced;
 
-public class TileEntityEncoder
-extends TileEntityAdvanced
-implements ISidedInventory {
+public class TileEntityEncoder extends TileEntityAdvanced implements ISidedInventory {
     private ItemStack disk;
     private IInventoryWatcher watcher;
 
@@ -78,16 +77,20 @@ implements ISidedInventory {
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer player) {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : player.getDistanceSq((double)this.xCoord + 0.5, (double)this.yCoord + 0.5, (double)this.zCoord + 0.5) <= 64.0;
+        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this
+            ? false
+            : player.getDistanceSq(
+                  (double) this.xCoord + 0.5,
+                  (double) this.yCoord + 0.5,
+                  (double) this.zCoord + 0.5
+              ) <= 64.0;
     }
 
     @Override
-    public void openInventory() {
-    }
+    public void openInventory() {}
 
     @Override
-    public void closeInventory() {
-    }
+    public void closeInventory() {}
 
     public void setWatcher(IInventoryWatcher watcher) {
         this.watcher = watcher;
@@ -112,12 +115,13 @@ implements ISidedInventory {
         super.readFromNBT(nbt);
         NBTTagCompound diskNBT = nbt.getCompoundTag("disk");
         if (diskNBT != null) {
-            this.disk = ItemStack.loadItemStackFromNBT((NBTTagCompound)diskNBT);
+            this.disk = ItemStack.loadItemStackFromNBT((NBTTagCompound) diskNBT);
         }
     }
 
     public void handleMessage(NBTTagCompound nbt) {
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER && this.disk != null) {
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER
+            && this.disk != null) {
             ArrayList<String> tempCmds = ItemDisk.getCommands(this.disk);
             if (nbt.getBoolean("create")) {
                 String newCommand = nbt.getString("newCommand");
@@ -157,7 +161,6 @@ implements ISidedInventory {
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
-        return side == ForgeDirection.UP.ordinal() ? new int[] {0} : new int[0];
+        return side == ForgeDirection.UP.ordinal() ? new int[] { 0 } : new int[0];
     }
 }
-

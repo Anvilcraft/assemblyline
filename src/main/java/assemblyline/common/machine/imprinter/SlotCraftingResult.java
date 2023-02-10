@@ -6,11 +6,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
-public class SlotCraftingResult
-extends WatchedSlot {
+public class SlotCraftingResult extends WatchedSlot {
     private ContainerImprinter container;
 
-    public SlotCraftingResult(ContainerImprinter container, IInventory inventory, int par2, int par3, int par4) {
+    public SlotCraftingResult(
+        ContainerImprinter container, IInventory inventory, int par2, int par3, int par4
+    ) {
         super(inventory, par2, par3, par4, container);
         this.container = container;
     }
@@ -28,4 +29,3 @@ extends WatchedSlot {
         super.onPickupFromSlot(entityPlayer, itemStack);
     }
 }
-

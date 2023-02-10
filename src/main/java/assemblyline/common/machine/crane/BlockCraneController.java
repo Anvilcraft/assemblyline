@@ -11,8 +11,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import universalelectricity.core.UniversalElectricity;
 
-public class BlockCraneController
-extends BlockALMachine {
+public class BlockCraneController extends BlockALMachine {
     public BlockCraneController() {
         super(UniversalElectricity.machine);
         this.setBlockName("craneController");
@@ -29,29 +28,39 @@ extends BlockALMachine {
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
-        int rot = (int)Math.min((entity.rotationYaw + 315.0f) % 360.0f / 90.0f, 3.0f);
+    public void onBlockPlacedBy(
+        World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack
+    ) {
+        int rot = (int) Math.min((entity.rotationYaw + 315.0f) % 360.0f / 90.0f, 3.0f);
         switch (rot) {
             case 0: {
-                world.setBlockMetadataWithNotify(x, y, z, ForgeDirection.WEST.ordinal(), 3);
+                world.setBlockMetadataWithNotify(
+                    x, y, z, ForgeDirection.WEST.ordinal(), 3
+                );
                 break;
             }
             case 1: {
-                world.setBlockMetadataWithNotify(x, y, z, ForgeDirection.NORTH.ordinal(), 3);
+                world.setBlockMetadataWithNotify(
+                    x, y, z, ForgeDirection.NORTH.ordinal(), 3
+                );
                 break;
             }
             case 2: {
-                world.setBlockMetadataWithNotify(x, y, z, ForgeDirection.EAST.ordinal(), 3);
+                world.setBlockMetadataWithNotify(
+                    x, y, z, ForgeDirection.EAST.ordinal(), 3
+                );
                 break;
             }
             default: {
-                world.setBlockMetadataWithNotify(x, y, z, ForgeDirection.SOUTH.ordinal(), 3);
+                world.setBlockMetadataWithNotify(
+                    x, y, z, ForgeDirection.SOUTH.ordinal(), 3
+                );
             }
         }
     }
 
     @Override
-    @SideOnly(value=Side.CLIENT)
+    @SideOnly(value = Side.CLIENT)
     public int getRenderType() {
         return BlockRenderingHandler.BLOCK_RENDER_ID;
     }
@@ -61,4 +70,3 @@ extends BlockALMachine {
         return new TileEntityCraneController();
     }
 }
-

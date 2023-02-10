@@ -1,10 +1,11 @@
 package assemblyline.common.machine.imprinter;
 
+import java.util.ArrayList;
+
 import assemblyline.api.IFilterable;
 import assemblyline.common.machine.TileEntityAssemblyNetwork;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
-import java.util.ArrayList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,17 +18,18 @@ import net.minecraftforge.common.util.ForgeDirection;
 import universalelectricity.prefab.implement.IRotatable;
 
 public abstract class TileEntityFilterable
-extends TileEntityAssemblyNetwork
-implements IRotatable,
-IFilterable {
+    extends TileEntityAssemblyNetwork implements IRotatable, IFilterable {
     private ItemStack filterItem;
     private boolean inverted;
 
     public boolean isFiltering(ItemStack itemStack) {
         ArrayList checkStacks;
-        if (this.getFilter() != null && itemStack != null && (checkStacks = ItemImprinter.getFilters(this.getFilter())) != null) {
+        if (this.getFilter() != null && itemStack != null
+            && (checkStacks = ItemImprinter.getFilters(this.getFilter())) != null) {
             for (int i = 0; i < checkStacks.size(); ++i) {
-                if (checkStacks.get(i) == null || !((ItemStack)checkStacks.get(i)).isItemEqual(itemStack)) continue;
+                if (checkStacks.get(i) == null
+                    || !((ItemStack) checkStacks.get(i)).isItemEqual(itemStack))
+                    continue;
                 return !this.inverted;
             }
         }
@@ -64,27 +66,36 @@ IFilterable {
 
     @Override
     public ForgeDirection getDirection(IBlockAccess world, int x, int y, int z) {
-        return ForgeDirection.getOrientation((int)this.getBlockMetadata());
+        return ForgeDirection.getOrientation((int) this.getBlockMetadata());
     }
 
     @Override
-    public void setDirection(World world, int x, int y, int z, ForgeDirection facingDirection) {
-        this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, facingDirection.ordinal(), 3);
+    public void
+    setDirection(World world, int x, int y, int z, ForgeDirection facingDirection) {
+        this.worldObj.setBlockMetadataWithNotify(
+            this.xCoord, this.yCoord, this.zCoord, facingDirection.ordinal(), 3
+        );
     }
 
     public void setDirection(ForgeDirection facingDirection) {
-        this.setDirection(this.worldObj, this.xCoord, this.yCoord, this.zCoord, facingDirection);
+        this.setDirection(
+            this.worldObj, this.xCoord, this.yCoord, this.zCoord, facingDirection
+        );
     }
 
     public ForgeDirection getDirection() {
-        return this.getDirection((IBlockAccess)this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+        return this.getDirection(
+            (IBlockAccess) this.worldObj, this.xCoord, this.yCoord, this.zCoord
+        );
     }
 
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound tag = new NBTTagCompound();
         this.writeToNBT(tag);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, getBlockMetadata(), tag);
+        return new S35PacketUpdateTileEntity(
+            xCoord, yCoord, zCoord, getBlockMetadata(), tag
+        );
     }
 
     @Override
@@ -101,7 +112,7 @@ IFilterable {
         if (this.getFilter() != null) {
             this.getFilter().writeToNBT(filter);
         }
-        nbt.setTag("filter", (NBTBase)filter);
+        nbt.setTag("filter", (NBTBase) filter);
         nbt.setBoolean("inverted", this.inverted);
     }
 
@@ -110,7 +121,6 @@ IFilterable {
         super.readFromNBT(nbt);
         this.inverted = nbt.getBoolean("inverted");
         NBTTagCompound filter = nbt.getCompoundTag("filter");
-        this.filterItem = ItemStack.loadItemStackFromNBT((NBTTagCompound)filter);
+        this.filterItem = ItemStack.loadItemStackFromNBT((NBTTagCompound) filter);
     }
 }
-

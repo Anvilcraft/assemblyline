@@ -13,8 +13,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockEncoder
-extends BlockALMachine {
+public class BlockEncoder extends BlockALMachine {
     IIcon encoder_side;
     IIcon encoder_top;
     IIcon encoder_bottom;
@@ -26,7 +25,7 @@ extends BlockALMachine {
     }
 
     @Override
-    @SideOnly(value=Side.CLIENT)
+    @SideOnly(value = Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconReg) {
         this.encoder_side = iconReg.registerIcon("assemblyline:encoder_side");
         this.encoder_top = iconReg.registerIcon("assemblyline:encoder_top");
@@ -50,9 +49,19 @@ extends BlockALMachine {
     }
 
     @Override
-    public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
+    public boolean onMachineActivated(
+        World world,
+        int x,
+        int y,
+        int z,
+        EntityPlayer entityPlayer,
+        int par6,
+        float par7,
+        float par8,
+        float par9
+    ) {
         if (!world.isRemote) {
-            entityPlayer.openGui((Object)AssemblyLine.instance, 2, world, x, y, z);
+            entityPlayer.openGui((Object) AssemblyLine.instance, 2, world, x, y, z);
         }
         return true;
     }
@@ -61,4 +70,3 @@ extends BlockALMachine {
         return new TileEntityEncoder();
     }
 }
-

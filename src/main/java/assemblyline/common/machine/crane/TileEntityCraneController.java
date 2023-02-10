@@ -7,8 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityCraneController
-extends TileEntityAssemblyNetwork
-implements ICraneConnectable {
+    extends TileEntityAssemblyNetwork implements ICraneConnectable {
     int width = 0;
     int height = 0;
     int depth = 0;
@@ -35,7 +34,8 @@ implements ICraneConnectable {
         this.findCraneHeight();
         this.findCraneWidth();
         this.findCraneDepth();
-        if (Math.abs(this.height) > 1 && Math.abs(this.width) > 1 && Math.abs(this.depth) > 1) {
+        if (Math.abs(this.height) > 1 && Math.abs(this.width) > 1
+            && Math.abs(this.depth) > 1) {
             this.isCraneValid = this.isFrameValid();
         }
     }
@@ -44,24 +44,46 @@ implements ICraneConnectable {
         int z;
         int x;
         for (x = Math.min(0, this.width); x <= Math.max(0, this.width); ++x) {
-            if (CraneHelper.isCraneStructureBlock(this.worldObj, this.xCoord + x, this.yCoord + this.height, this.zCoord)) continue;
+            if (CraneHelper.isCraneStructureBlock(
+                    this.worldObj, this.xCoord + x, this.yCoord + this.height, this.zCoord
+                ))
+                continue;
             return false;
         }
         for (x = Math.min(0, this.width); x <= Math.max(0, this.width); ++x) {
-            if (CraneHelper.isCraneStructureBlock(this.worldObj, this.xCoord + x, this.yCoord + this.height, this.zCoord + this.depth)) continue;
+            if (CraneHelper.isCraneStructureBlock(
+                    this.worldObj,
+                    this.xCoord + x,
+                    this.yCoord + this.height,
+                    this.zCoord + this.depth
+                ))
+                continue;
             return false;
         }
         for (z = Math.min(0, this.depth); z <= Math.max(0, this.depth); ++z) {
-            if (CraneHelper.isCraneStructureBlock(this.worldObj, this.xCoord, this.yCoord + this.height, this.zCoord + z)) continue;
+            if (CraneHelper.isCraneStructureBlock(
+                    this.worldObj, this.xCoord, this.yCoord + this.height, this.zCoord + z
+                ))
+                continue;
             return false;
         }
         for (z = Math.min(0, this.depth); z <= Math.max(0, this.depth); ++z) {
-            if (CraneHelper.isCraneStructureBlock(this.worldObj, this.xCoord + this.width, this.yCoord + this.height, this.zCoord + z)) continue;
+            if (CraneHelper.isCraneStructureBlock(
+                    this.worldObj,
+                    this.xCoord + this.width,
+                    this.yCoord + this.height,
+                    this.zCoord + z
+                ))
+                continue;
             return false;
         }
         for (x = Math.min(this.width + 1, 1); x <= Math.max(-1, this.width - 1); ++x) {
-            for (int z2 = Math.min(this.depth + 1, 1); z2 <= Math.max(-1, this.depth - 1); ++z2) {
-                if (this.worldObj.isAirBlock(this.xCoord + x, this.yCoord + this.height, this.zCoord + z2)) continue;
+            for (int z2 = Math.min(this.depth + 1, 1); z2 <= Math.max(-1, this.depth - 1);
+                 ++z2) {
+                if (this.worldObj.isAirBlock(
+                        this.xCoord + x, this.yCoord + this.height, this.zCoord + z2
+                    ))
+                    continue;
                 return false;
             }
         }
@@ -74,8 +96,12 @@ implements ICraneConnectable {
             return;
         }
         int x = 0;
-        ForgeDirection facing = ForgeDirection.getOrientation((int)this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
-        while (Math.abs(x) <= 64 && CraneHelper.isCraneStructureBlock(this.worldObj, this.xCoord + x, this.yCoord + this.height, this.zCoord)) {
+        ForgeDirection facing = ForgeDirection.getOrientation((int
+        ) this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
+        while (Math.abs(x) <= 64
+               && CraneHelper.isCraneStructureBlock(
+                   this.worldObj, this.xCoord + x, this.yCoord + this.height, this.zCoord
+               )) {
             if (facing == ForgeDirection.NORTH || facing == ForgeDirection.EAST) {
                 ++x;
                 continue;
@@ -93,8 +119,11 @@ implements ICraneConnectable {
 
     private void findCraneHeight() {
         int y;
-        for (y = 1; this.yCoord + y < 256 && y <= 64 && CraneHelper.isCraneStructureBlock(this.worldObj, this.xCoord, this.yCoord + y, this.zCoord); ++y) {
-        }
+        for (y = 1; this.yCoord + y < 256 && y <= 64
+             && CraneHelper.isCraneStructureBlock(
+                 this.worldObj, this.xCoord, this.yCoord + y, this.zCoord
+             );
+             ++y) {}
         this.height = y - 1;
     }
 
@@ -104,8 +133,12 @@ implements ICraneConnectable {
             return;
         }
         int z = 0;
-        ForgeDirection facing = ForgeDirection.getOrientation((int)this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
-        while (Math.abs(z) <= 64 && CraneHelper.isCraneStructureBlock(this.worldObj, this.xCoord, this.yCoord + this.height, this.zCoord + z)) {
+        ForgeDirection facing = ForgeDirection.getOrientation((int
+        ) this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
+        while (Math.abs(z) <= 64
+               && CraneHelper.isCraneStructureBlock(
+                   this.worldObj, this.xCoord, this.yCoord + this.height, this.zCoord + z
+               )) {
             if (facing == ForgeDirection.SOUTH || facing == ForgeDirection.EAST) {
                 ++z;
                 continue;
@@ -123,7 +156,8 @@ implements ICraneConnectable {
 
     @Override
     public boolean canFrameConnectTo(ForgeDirection side) {
-        ForgeDirection facing = ForgeDirection.getOrientation((int)this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
+        ForgeDirection facing = ForgeDirection.getOrientation((int
+        ) this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
         if (side == facing) {
             return true;
         }
@@ -156,4 +190,3 @@ implements ICraneConnectable {
         return true;
     }
 }
-

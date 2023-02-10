@@ -1,10 +1,11 @@
 package assemblyline.common.machine.imprinter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import assemblyline.common.TabAssemblyLine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -17,8 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChatComponentText;
 
-public class ItemImprinter
-extends Item {
+public class ItemImprinter extends Item {
     public ItemImprinter() {
         super();
         this.setUnlocalizedName("imprint");
@@ -27,7 +27,7 @@ extends Item {
     }
 
     @Override
-    @SideOnly(value=Side.CLIENT)
+    @SideOnly(value = Side.CLIENT)
     public void registerIcons(IIconRegister par1IconRegister) {
         this.itemIcon = par1IconRegister.registerIcon("assemblyline:imprint");
     }
@@ -38,9 +38,11 @@ extends Item {
     }
 
     @Override
-    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
-        if (entity != null && !(entity instanceof IProjectile) && !(entity instanceof EntityPlayer)) {
-            String stringName = EntityList.getEntityString((Entity)entity);
+    public boolean
+    onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
+        if (entity != null && !(entity instanceof IProjectile)
+            && !(entity instanceof EntityPlayer)) {
+            String stringName = EntityList.getEntityString((Entity) entity);
             player.addChatMessage(new ChatComponentText("Target: " + stringName));
             return true;
         }
@@ -48,7 +50,9 @@ extends Item {
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
+    public void addInformation(
+        ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4
+    ) {
         List<ItemStack> filterItems = ItemImprinter.getFilters(itemStack);
         if (filterItems.size() > 0) {
             for (ItemStack filterItem : filterItems) {
@@ -65,13 +69,14 @@ extends Item {
         }
         NBTTagList nbt = new NBTTagList();
         for (int i = 0; i < filterStacks.size(); ++i) {
-            if (filterStacks.get(i) == null) continue;
+            if (filterStacks.get(i) == null)
+                continue;
             NBTTagCompound newCompound = new NBTTagCompound();
-            newCompound.setByte("Slot", (byte)i);
-            ((ItemStack)filterStacks.get(i)).writeToNBT(newCompound);
-            nbt.appendTag((NBTBase)newCompound);
+            newCompound.setByte("Slot", (byte) i);
+            ((ItemStack) filterStacks.get(i)).writeToNBT(newCompound);
+            nbt.appendTag((NBTBase) newCompound);
         }
-        itemStack.getTagCompound().setTag("Items", (NBTBase)nbt);
+        itemStack.getTagCompound().setTag("Items", (NBTBase) nbt);
     }
 
     public static ArrayList getFilters(ItemStack itemStack) {
@@ -82,11 +87,10 @@ extends Item {
         NBTTagCompound nbt = itemStack.getTagCompound();
         NBTTagList tagList = nbt.getTagList("Items", 10);
         for (int i = 0; i < tagList.tagCount(); ++i) {
-            NBTTagCompound var4 = (NBTTagCompound)tagList.getCompoundTagAt(i);
+            NBTTagCompound var4 = (NBTTagCompound) tagList.getCompoundTagAt(i);
             byte var5 = var4.getByte("Slot");
-            filterStacks.add(ItemStack.loadItemStackFromNBT((NBTTagCompound)var4));
+            filterStacks.add(ItemStack.loadItemStackFromNBT((NBTTagCompound) var4));
         }
         return filterStacks;
     }
 }
-

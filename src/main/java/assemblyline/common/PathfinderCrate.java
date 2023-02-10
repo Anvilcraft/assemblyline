@@ -1,18 +1,23 @@
 package assemblyline.common;
 
-import assemblyline.common.block.TileEntityCrate;
 import java.util.ArrayList;
 import java.util.List;
+
+import assemblyline.common.block.TileEntityCrate;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.core.vector.VectorHelper;
 
 public class PathfinderCrate {
-    public IPathCallBack callBackCheck = new IPathCallBack(){
-
+    public IPathCallBack callBackCheck = new IPathCallBack() {
         @Override
-        public boolean isValidNode(PathfinderCrate finder, ForgeDirection direction, TileEntity provider, TileEntity node) {
+        public boolean isValidNode(
+            PathfinderCrate finder,
+            ForgeDirection direction,
+            TileEntity provider,
+            TileEntity node
+        ) {
             return node instanceof TileEntityCrate;
         }
 
@@ -35,8 +40,20 @@ public class PathfinderCrate {
                 return false;
             }
             for (int i = 0; i < 6; ++i) {
-                TileEntity connectedTile = VectorHelper.getTileEntityFromSide(provider.getWorldObj(), new Vector3(provider), ForgeDirection.getOrientation((int)i));
-                if (this.iteratedNodes.contains((Object)connectedTile) || !this.callBackCheck.isValidNode(this, ForgeDirection.getOrientation((int)i), provider, connectedTile) || this.findNodes(connectedTile)) continue;
+                TileEntity connectedTile = VectorHelper.getTileEntityFromSide(
+                    provider.getWorldObj(),
+                    new Vector3(provider),
+                    ForgeDirection.getOrientation((int) i)
+                );
+                if (this.iteratedNodes.contains((Object) connectedTile)
+                    || !this.callBackCheck.isValidNode(
+                        this,
+                        ForgeDirection.getOrientation((int) i),
+                        provider,
+                        connectedTile
+                    )
+                    || this.findNodes(connectedTile))
+                    continue;
                 return false;
             }
         }
@@ -55,9 +72,10 @@ public class PathfinderCrate {
     }
 
     public static interface IPathCallBack {
-        public boolean isValidNode(PathfinderCrate var1, ForgeDirection var2, TileEntity var3, TileEntity var4);
+        public boolean isValidNode(
+            PathfinderCrate var1, ForgeDirection var2, TileEntity var3, TileEntity var4
+        );
 
         public boolean onSearch(PathfinderCrate var1, TileEntity var2);
     }
 }
-

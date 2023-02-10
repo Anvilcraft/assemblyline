@@ -28,8 +28,7 @@ public class Pair {
         if (!(o instanceof Pair)) {
             return false;
         }
-        Pair pairo = (Pair)o;
+        Pair pairo = (Pair) o;
         return this.left.equals(pairo.getKey()) && this.right.equals(pairo.getValue());
     }
 }
-

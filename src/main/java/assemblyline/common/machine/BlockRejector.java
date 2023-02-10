@@ -9,8 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import universalelectricity.core.UniversalElectricity;
 
-public class BlockRejector
-extends BlockImprintable {
+public class BlockRejector extends BlockImprintable {
     public BlockRejector() {
         super("rejector", UniversalElectricity.machine, TabAssemblyLine.INSTANCE);
     }
@@ -31,9 +30,8 @@ extends BlockImprintable {
     }
 
     @Override
-    @SideOnly(value=Side.CLIENT)
+    @SideOnly(value = Side.CLIENT)
     public int getRenderType() {
         return BlockRenderingHandler.BLOCK_RENDER_ID;
     }
 }
-

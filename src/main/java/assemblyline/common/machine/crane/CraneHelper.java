@@ -10,16 +10,22 @@ public class CraneHelper {
     public static final int MAX_SIZE = 64;
 
     public static boolean isCraneBlock(World world, int x, int y, int z) {
-        return world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof ICraneConnectable;
+        return world.getTileEntity(x, y, z) != null
+            && world.getTileEntity(x, y, z) instanceof ICraneConnectable;
     }
 
     public static boolean isCraneStructureBlock(World world, int x, int y, int z) {
-        return world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof ICraneStructure;
+        return world.getTileEntity(x, y, z) != null
+            && world.getTileEntity(x, y, z) instanceof ICraneStructure;
     }
 
-    public static boolean canFrameConnectTo(TileEntity tileEntity, int x, int y, int z, ForgeDirection side) {
-        if (tileEntity.getWorldObj().getTileEntity(x, y, z) != null && tileEntity.getWorldObj().getTileEntity(x, y, z) instanceof ICraneConnectable) {
-            return ((ICraneConnectable)tileEntity.getWorldObj().getTileEntity(x, y, z)).canFrameConnectTo(side);
+    public static boolean
+    canFrameConnectTo(TileEntity tileEntity, int x, int y, int z, ForgeDirection side) {
+        if (tileEntity.getWorldObj().getTileEntity(x, y, z) != null
+            && tileEntity.getWorldObj().getTileEntity(x, y, z)
+                    instanceof ICraneConnectable) {
+            return ((ICraneConnectable) tileEntity.getWorldObj().getTileEntity(x, y, z))
+                .canFrameConnectTo(side);
         }
         return false;
     }
@@ -56,4 +62,3 @@ public class CraneHelper {
         return ForgeDirection.UNKNOWN;
     }
 }
-

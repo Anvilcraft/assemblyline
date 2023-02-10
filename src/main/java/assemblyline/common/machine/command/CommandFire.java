@@ -1,8 +1,9 @@
 package assemblyline.common.machine.command;
 
+import java.util.Random;
+
 import assemblyline.common.machine.command.Command;
 import assemblyline.common.machine.command.CommandDrop;
-import java.util.Random;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -12,8 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import universalelectricity.core.vector.Vector3;
 
-public class CommandFire
-extends Command {
+public class CommandFire extends Command {
     private static final float MIN_ACTUAL_PITCH = -80.0f;
     private static final float MAX_ACTUAL_PITCH = 80.0f;
     private float actualYaw;
@@ -40,9 +40,9 @@ extends Command {
         double z = Math.cos(yaw) * Math.cos(pitch);
         this.finalVelocity = new Vector3(x, y, z);
         Random random = new Random(System.currentTimeMillis());
-        this.finalVelocity.x *= (double)(0.995f + random.nextFloat() * 0.01f);
-        this.finalVelocity.y *= (double)(0.995f + random.nextFloat() * 0.01f);
-        this.finalVelocity.z *= (double)(0.995f + random.nextFloat() * 0.01f);
+        this.finalVelocity.x *= (double) (0.995f + random.nextFloat() * 0.01f);
+        this.finalVelocity.y *= (double) (0.995f + random.nextFloat() * 0.01f);
+        this.finalVelocity.z *= (double) (0.995f + random.nextFloat() * 0.01f);
         this.finalVelocity.multiply(this.velocity);
     }
 
@@ -52,10 +52,19 @@ extends Command {
         if (this.finalVelocity == null) {
             this.finalVelocity = new Vector3(0.0, 0.0, 0.0);
         }
-        if (this.tileEntity.getGrabbedEntities().size() > 0 && (held = (Entity)this.tileEntity.getGrabbedEntities().get(0)) != null) {
-            this.world.playSound((double)this.tileEntity.xCoord, (double)this.tileEntity.yCoord, (double)this.tileEntity.zCoord, "random.bow", this.velocity, 2.0f - this.velocity / 4.0f, true);
+        if (this.tileEntity.getGrabbedEntities().size() > 0
+            && (held = (Entity) this.tileEntity.getGrabbedEntities().get(0)) != null) {
+            this.world.playSound(
+                (double) this.tileEntity.xCoord,
+                (double) this.tileEntity.yCoord,
+                (double) this.tileEntity.zCoord,
+                "random.bow",
+                this.velocity,
+                2.0f - this.velocity / 4.0f,
+                true
+            );
             if (held instanceof EntityItem) {
-                EntityItem item = (EntityItem)held;
+                EntityItem item = (EntityItem) held;
                 ItemStack stack = item.getEntityItem();
                 ItemStack thrown = stack.copy();
                 thrown.stackSize = 1;
@@ -63,30 +72,45 @@ extends Command {
                     --stack.stackSize;
                     item.setEntityItemStack(stack);
                 } else {
-                    this.commandManager.getNewCommand(this.tileEntity, CommandDrop.class, new String[0]).doTask();
+                    this.commandManager
+                        .getNewCommand(this.tileEntity, CommandDrop.class, new String[0])
+                        .doTask();
                     if (!this.world.isRemote) {
                         this.world.removeEntity(held);
                     }
                 }
                 if (item.getEntityItem().getItem() == Items.arrow) {
-                    EntityArrow arrow = new EntityArrow(this.world, this.tileEntity.getHandPosition().x, this.tileEntity.getHandPosition().y, this.tileEntity.getHandPosition().z);
+                    EntityArrow arrow = new EntityArrow(
+                        this.world,
+                        this.tileEntity.getHandPosition().x,
+                        this.tileEntity.getHandPosition().y,
+                        this.tileEntity.getHandPosition().z
+                    );
                     arrow.motionX = this.finalVelocity.x;
                     arrow.motionY = this.finalVelocity.y;
                     arrow.motionZ = this.finalVelocity.z;
                     if (!this.world.isRemote) {
-                        this.world.spawnEntityInWorld((Entity)arrow);
+                        this.world.spawnEntityInWorld((Entity) arrow);
                     }
                 } else {
-                    EntityItem item2 = new EntityItem(this.world, this.tileEntity.getHandPosition().x, this.tileEntity.getHandPosition().y, this.tileEntity.getHandPosition().z, thrown);
+                    EntityItem item2 = new EntityItem(
+                        this.world,
+                        this.tileEntity.getHandPosition().x,
+                        this.tileEntity.getHandPosition().y,
+                        this.tileEntity.getHandPosition().z,
+                        thrown
+                    );
                     item2.motionX = this.finalVelocity.x;
                     item2.motionY = this.finalVelocity.y;
                     item2.motionZ = this.finalVelocity.z;
                     if (!this.world.isRemote) {
-                        this.world.spawnEntityInWorld((Entity)item2);
+                        this.world.spawnEntityInWorld((Entity) item2);
                     }
                 }
             } else {
-                this.commandManager.getNewCommand(this.tileEntity, CommandDrop.class, new String[0]).doTask();
+                this.commandManager
+                    .getNewCommand(this.tileEntity, CommandDrop.class, new String[0])
+                    .doTask();
                 held.motionX = this.finalVelocity.x;
                 held.motionY = this.finalVelocity.y;
                 held.motionZ = this.finalVelocity.z;
@@ -125,4 +149,3 @@ extends Command {
         return "FIRE " + Float.toString(this.velocity);
     }
 }
-

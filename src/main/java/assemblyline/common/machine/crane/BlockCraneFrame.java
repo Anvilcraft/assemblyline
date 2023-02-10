@@ -11,8 +11,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import universalelectricity.core.UniversalElectricity;
 
-public class BlockCraneFrame
-extends BlockALMachine {
+public class BlockCraneFrame extends BlockALMachine {
     public BlockCraneFrame() {
         super(UniversalElectricity.machine);
         this.setBlockName("craneFrame");
@@ -20,22 +19,78 @@ extends BlockALMachine {
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+    public AxisAlignedBB
+    getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
         TileEntity tE = world.getTileEntity(x, y, z);
         if (tE != null && tE instanceof TileEntityCraneRail) {
-            AxisAlignedBB middle = AxisAlignedBB.getBoundingBox((double)0.25, (double)0.25, (double)0.25, (double)0.75, (double)0.75, (double)0.75);
-            AxisAlignedBB up = AxisAlignedBB.getBoundingBox((double)0.25, (double)0.75, (double)0.25, (double)0.75, (double)1.0, (double)0.75);
-            AxisAlignedBB down = AxisAlignedBB.getBoundingBox((double)0.25, (double)0.0, (double)0.25, (double)0.75, (double)0.25, (double)0.75);
-            AxisAlignedBB left = AxisAlignedBB.getBoundingBox((double)0.0, (double)0.25, (double)0.25, (double)0.25, (double)0.75, (double)0.75);
-            AxisAlignedBB right = AxisAlignedBB.getBoundingBox((double)0.75, (double)0.25, (double)0.25, (double)1.0, (double)0.75, (double)0.75);
-            AxisAlignedBB front = AxisAlignedBB.getBoundingBox((double)0.25, (double)0.25, (double)0.0, (double)0.75, (double)0.75, (double)0.25);
-            AxisAlignedBB back = AxisAlignedBB.getBoundingBox((double)0.25, (double)0.25, (double)0.75, (double)0.75, (double)0.75, (double)1.0);
-            boolean connectUp = CraneHelper.canFrameConnectTo(tE, x, y + 1, z, ForgeDirection.DOWN);
-            boolean connectDown = CraneHelper.canFrameConnectTo(tE, x, y - 1, z, ForgeDirection.UP);
-            boolean connectLeft = CraneHelper.canFrameConnectTo(tE, x - 1, y, z, ForgeDirection.EAST);
-            boolean connectRight = CraneHelper.canFrameConnectTo(tE, x + 1, y, z, ForgeDirection.WEST);
-            boolean connectFront = CraneHelper.canFrameConnectTo(tE, x, y, z - 1, ForgeDirection.SOUTH);
-            boolean connectBack = CraneHelper.canFrameConnectTo(tE, x, y, z + 1, ForgeDirection.NORTH);
+            AxisAlignedBB middle = AxisAlignedBB.getBoundingBox(
+                (double) 0.25,
+                (double) 0.25,
+                (double) 0.25,
+                (double) 0.75,
+                (double) 0.75,
+                (double) 0.75
+            );
+            AxisAlignedBB up = AxisAlignedBB.getBoundingBox(
+                (double) 0.25,
+                (double) 0.75,
+                (double) 0.25,
+                (double) 0.75,
+                (double) 1.0,
+                (double) 0.75
+            );
+            AxisAlignedBB down = AxisAlignedBB.getBoundingBox(
+                (double) 0.25,
+                (double) 0.0,
+                (double) 0.25,
+                (double) 0.75,
+                (double) 0.25,
+                (double) 0.75
+            );
+            AxisAlignedBB left = AxisAlignedBB.getBoundingBox(
+                (double) 0.0,
+                (double) 0.25,
+                (double) 0.25,
+                (double) 0.25,
+                (double) 0.75,
+                (double) 0.75
+            );
+            AxisAlignedBB right = AxisAlignedBB.getBoundingBox(
+                (double) 0.75,
+                (double) 0.25,
+                (double) 0.25,
+                (double) 1.0,
+                (double) 0.75,
+                (double) 0.75
+            );
+            AxisAlignedBB front = AxisAlignedBB.getBoundingBox(
+                (double) 0.25,
+                (double) 0.25,
+                (double) 0.0,
+                (double) 0.75,
+                (double) 0.75,
+                (double) 0.25
+            );
+            AxisAlignedBB back = AxisAlignedBB.getBoundingBox(
+                (double) 0.25,
+                (double) 0.25,
+                (double) 0.75,
+                (double) 0.75,
+                (double) 0.75,
+                (double) 1.0
+            );
+            boolean connectUp
+                = CraneHelper.canFrameConnectTo(tE, x, y + 1, z, ForgeDirection.DOWN);
+            boolean connectDown
+                = CraneHelper.canFrameConnectTo(tE, x, y - 1, z, ForgeDirection.UP);
+            boolean connectLeft
+                = CraneHelper.canFrameConnectTo(tE, x - 1, y, z, ForgeDirection.EAST);
+            boolean connectRight
+                = CraneHelper.canFrameConnectTo(tE, x + 1, y, z, ForgeDirection.WEST);
+            boolean connectFront
+                = CraneHelper.canFrameConnectTo(tE, x, y, z - 1, ForgeDirection.SOUTH);
+            boolean connectBack
+                = CraneHelper.canFrameConnectTo(tE, x, y, z + 1, ForgeDirection.NORTH);
             if (connectUp) {
                 middle.maxY = up.maxY;
             }
@@ -54,8 +109,15 @@ extends BlockALMachine {
             if (connectBack) {
                 middle.maxZ = back.maxZ;
             }
-            this.setBlockBounds((float)middle.minX, (float)middle.minY, (float)middle.minZ, (float)middle.maxX, (float)middle.maxY, (float)middle.maxZ);
-            middle.offset((double)x, (double)y, (double)z);
+            this.setBlockBounds(
+                (float) middle.minX,
+                (float) middle.minY,
+                (float) middle.minZ,
+                (float) middle.maxX,
+                (float) middle.maxY,
+                (float) middle.maxZ
+            );
+            middle.offset((double) x, (double) y, (double) z);
             return middle;
         }
         return super.getCollisionBoundingBoxFromPool(world, x, y, z);
@@ -65,19 +127,74 @@ extends BlockALMachine {
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         TileEntity tE = world.getTileEntity(x, y, z);
         if (tE != null && tE instanceof TileEntityCraneRail) {
-            AxisAlignedBB middle = AxisAlignedBB.getBoundingBox((double)0.25, (double)0.25, (double)0.25, (double)0.75, (double)0.75, (double)0.75);
-            AxisAlignedBB up = AxisAlignedBB.getBoundingBox((double)0.25, (double)0.75, (double)0.25, (double)0.75, (double)1.0, (double)0.75);
-            AxisAlignedBB down = AxisAlignedBB.getBoundingBox((double)0.25, (double)0.0, (double)0.25, (double)0.75, (double)0.25, (double)0.75);
-            AxisAlignedBB left = AxisAlignedBB.getBoundingBox((double)0.0, (double)0.25, (double)0.25, (double)0.25, (double)0.75, (double)0.75);
-            AxisAlignedBB right = AxisAlignedBB.getBoundingBox((double)0.75, (double)0.25, (double)0.25, (double)1.0, (double)0.75, (double)0.75);
-            AxisAlignedBB front = AxisAlignedBB.getBoundingBox((double)0.25, (double)0.25, (double)0.0, (double)0.75, (double)0.75, (double)0.25);
-            AxisAlignedBB back = AxisAlignedBB.getBoundingBox((double)0.25, (double)0.25, (double)0.75, (double)0.75, (double)0.75, (double)1.0);
-            boolean connectUp = CraneHelper.canFrameConnectTo(tE, x, y + 1, z, ForgeDirection.DOWN);
-            boolean connectDown = CraneHelper.canFrameConnectTo(tE, x, y - 1, z, ForgeDirection.UP);
-            boolean connectLeft = CraneHelper.canFrameConnectTo(tE, x - 1, y, z, ForgeDirection.EAST);
-            boolean connectRight = CraneHelper.canFrameConnectTo(tE, x + 1, y, z, ForgeDirection.WEST);
-            boolean connectFront = CraneHelper.canFrameConnectTo(tE, x, y, z - 1, ForgeDirection.SOUTH);
-            boolean connectBack = CraneHelper.canFrameConnectTo(tE, x, y, z + 1, ForgeDirection.NORTH);
+            AxisAlignedBB middle = AxisAlignedBB.getBoundingBox(
+                (double) 0.25,
+                (double) 0.25,
+                (double) 0.25,
+                (double) 0.75,
+                (double) 0.75,
+                (double) 0.75
+            );
+            AxisAlignedBB up = AxisAlignedBB.getBoundingBox(
+                (double) 0.25,
+                (double) 0.75,
+                (double) 0.25,
+                (double) 0.75,
+                (double) 1.0,
+                (double) 0.75
+            );
+            AxisAlignedBB down = AxisAlignedBB.getBoundingBox(
+                (double) 0.25,
+                (double) 0.0,
+                (double) 0.25,
+                (double) 0.75,
+                (double) 0.25,
+                (double) 0.75
+            );
+            AxisAlignedBB left = AxisAlignedBB.getBoundingBox(
+                (double) 0.0,
+                (double) 0.25,
+                (double) 0.25,
+                (double) 0.25,
+                (double) 0.75,
+                (double) 0.75
+            );
+            AxisAlignedBB right = AxisAlignedBB.getBoundingBox(
+                (double) 0.75,
+                (double) 0.25,
+                (double) 0.25,
+                (double) 1.0,
+                (double) 0.75,
+                (double) 0.75
+            );
+            AxisAlignedBB front = AxisAlignedBB.getBoundingBox(
+                (double) 0.25,
+                (double) 0.25,
+                (double) 0.0,
+                (double) 0.75,
+                (double) 0.75,
+                (double) 0.25
+            );
+            AxisAlignedBB back = AxisAlignedBB.getBoundingBox(
+                (double) 0.25,
+                (double) 0.25,
+                (double) 0.75,
+                (double) 0.75,
+                (double) 0.75,
+                (double) 1.0
+            );
+            boolean connectUp
+                = CraneHelper.canFrameConnectTo(tE, x, y + 1, z, ForgeDirection.DOWN);
+            boolean connectDown
+                = CraneHelper.canFrameConnectTo(tE, x, y - 1, z, ForgeDirection.UP);
+            boolean connectLeft
+                = CraneHelper.canFrameConnectTo(tE, x - 1, y, z, ForgeDirection.EAST);
+            boolean connectRight
+                = CraneHelper.canFrameConnectTo(tE, x + 1, y, z, ForgeDirection.WEST);
+            boolean connectFront
+                = CraneHelper.canFrameConnectTo(tE, x, y, z - 1, ForgeDirection.SOUTH);
+            boolean connectBack
+                = CraneHelper.canFrameConnectTo(tE, x, y, z + 1, ForgeDirection.NORTH);
             if (connectUp) {
                 middle.maxY = up.maxY;
             }
@@ -96,7 +213,14 @@ extends BlockALMachine {
             if (connectBack) {
                 middle.maxZ = back.maxZ;
             }
-            this.setBlockBounds((float)middle.minX, (float)middle.minY, (float)middle.minZ, (float)middle.maxX, (float)middle.maxY, (float)middle.maxZ);
+            this.setBlockBounds(
+                (float) middle.minX,
+                (float) middle.minY,
+                (float) middle.minZ,
+                (float) middle.maxX,
+                (float) middle.maxY,
+                (float) middle.maxZ
+            );
             return;
         }
         this.setBlockBounds(0.25f, 0.25f, 0.25f, 0.75f, 0.75f, 0.75f);
@@ -118,9 +242,8 @@ extends BlockALMachine {
     }
 
     @Override
-    @SideOnly(value=Side.CLIENT)
+    @SideOnly(value = Side.CLIENT)
     public int getRenderType() {
         return BlockRenderingHandler.BLOCK_RENDER_ID;
     }
 }
-

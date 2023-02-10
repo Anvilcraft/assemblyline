@@ -3,8 +3,7 @@ package assemblyline.common.machine.command;
 import assemblyline.common.machine.command.Command;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class CommandRotateBy
-extends Command {
+public class CommandRotateBy extends Command {
     float targetRotationYaw = 0.0f;
     float targetRotationPitch = 0.0f;
     float deltaPitch = 0.0f;
@@ -16,13 +15,15 @@ extends Command {
         super.onTaskStart();
         this.ticks = 0;
         if (this.getArg(0) != null) {
-            this.targetRotationYaw = this.tileEntity.rotationYaw + this.getFloatArg(0).floatValue();
+            this.targetRotationYaw
+                = this.tileEntity.rotationYaw + this.getFloatArg(0).floatValue();
             this.deltaYaw = this.getFloatArg(0).floatValue();
         } else {
             this.targetRotationYaw = this.tileEntity.rotationYaw + 90.0f;
         }
         if (this.getArg(1) != null) {
-            this.targetRotationPitch = this.tileEntity.rotationPitch + this.getFloatArg(1).floatValue();
+            this.targetRotationPitch
+                = this.tileEntity.rotationPitch + this.getFloatArg(1).floatValue();
             this.deltaPitch = this.getFloatArg(1).floatValue();
         } else {
             this.targetRotationPitch = this.tileEntity.rotationPitch;
@@ -57,7 +58,8 @@ extends Command {
         if (Math.abs(this.tileEntity.rotationPitch - this.targetRotationPitch) > 0.001f) {
             this.tileEntity.rotationPitch = this.targetRotationPitch;
         }
-        if (Math.abs(this.tileEntity.renderPitch - this.tileEntity.rotationPitch) > 0.001f) {
+        if (Math.abs(this.tileEntity.renderPitch - this.tileEntity.rotationPitch)
+            > 0.001f) {
             return true;
         }
         return Math.abs(this.tileEntity.renderYaw - this.tileEntity.rotationYaw) > 0.001f;
@@ -79,7 +81,7 @@ extends Command {
 
     @Override
     public String toString() {
-        return "ROTATE " + Float.toString(this.deltaYaw) + " " + Float.toString(this.deltaPitch);
+        return "ROTATE " + Float.toString(this.deltaYaw) + " "
+            + Float.toString(this.deltaPitch);
     }
 }
-

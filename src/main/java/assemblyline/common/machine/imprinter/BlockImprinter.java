@@ -1,12 +1,12 @@
 package assemblyline.common.machine.imprinter;
 
+import java.util.Random;
+
 import assemblyline.common.AssemblyLine;
 import assemblyline.common.TabAssemblyLine;
 import assemblyline.common.block.BlockALMachine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -20,8 +20,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockImprinter
-extends BlockALMachine {
+public class BlockImprinter extends BlockALMachine {
     IIcon imprinter_side;
     IIcon imprinter_top;
     IIcon imprinter_bottom;
@@ -33,7 +32,7 @@ extends BlockALMachine {
     }
 
     @Override
-    @SideOnly(value=Side.CLIENT)
+    @SideOnly(value = Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconReg) {
         this.imprinter_side = iconReg.registerIcon("assemblyline:imprinter_side");
         this.imprinter_top = iconReg.registerIcon("assemblyline:imprinter_top");
@@ -41,7 +40,7 @@ extends BlockALMachine {
     }
 
     @Override
-    @SideOnly(value=Side.CLIENT)
+    @SideOnly(value = Side.CLIENT)
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
         return this.getIcon(side, 0);
     }
@@ -58,21 +57,33 @@ extends BlockALMachine {
     }
 
     @Override
-    public boolean onMachineActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
+    public boolean onMachineActivated(
+        World world,
+        int x,
+        int y,
+        int z,
+        EntityPlayer entityPlayer,
+        int par6,
+        float par7,
+        float par8,
+        float par9
+    ) {
         if (!world.isRemote) {
-            entityPlayer.openGui((Object)AssemblyLine.instance, 1, world, x, y, z);
+            entityPlayer.openGui((Object) AssemblyLine.instance, 1, world, x, y, z);
         }
         return true;
     }
 
     @Override
-    public void dropEntireInventory(World par1World, int x, int y, int z, Block par5, int par6) {
+    public void
+    dropEntireInventory(World par1World, int x, int y, int z, Block par5, int par6) {
         TileEntity tileEntity = par1World.getTileEntity(x, y, z);
         if (tileEntity != null && tileEntity instanceof TileEntityImprinter) {
-            TileEntityImprinter inventory = (TileEntityImprinter)tileEntity;
+            TileEntityImprinter inventory = (TileEntityImprinter) tileEntity;
             for (int i = 0; i < inventory.getSizeInventory(); ++i) {
                 ItemStack itemStack = inventory.getStackInSlot(i);
-                if (itemStack == null) continue;
+                if (itemStack == null)
+                    continue;
                 Random random = new Random();
                 float var8 = random.nextFloat() * 0.8f + 0.1f;
                 float var9 = random.nextFloat() * 0.8f + 0.1f;
@@ -83,26 +94,48 @@ extends BlockALMachine {
                         var11 = itemStack.stackSize;
                     }
                     itemStack.stackSize -= var11;
-                    if (i == inventory.imprinterMatrix.length + 9 - 1) continue;
-                    EntityItem entityItem = new EntityItem(par1World, (double)((float)x + var8), (double)((float)y + var9), (double)((float)z + var10), new ItemStack(itemStack.getItem(), var11, itemStack.getItemDamage()));
+                    if (i == inventory.imprinterMatrix.length + 9 - 1)
+                        continue;
+                    EntityItem entityItem = new EntityItem(
+                        par1World,
+                        (double) ((float) x + var8),
+                        (double) ((float) y + var9),
+                        (double) ((float) z + var10),
+                        new ItemStack(
+                            itemStack.getItem(), var11, itemStack.getItemDamage()
+                        )
+                    );
                     if (itemStack.hasTagCompound()) {
-                        entityItem.getEntityItem().setTagCompound((NBTTagCompound)itemStack.getTagCompound().copy());
+                        entityItem.getEntityItem().setTagCompound(
+                            (NBTTagCompound) itemStack.getTagCompound().copy()
+                        );
                     }
                     float var13 = 0.05f;
-                    entityItem.motionX = (float)random.nextGaussian() * var13;
-                    entityItem.motionY = (float)random.nextGaussian() * var13 + 0.2f;
-                    entityItem.motionZ = (float)random.nextGaussian() * var13;
-                    par1World.spawnEntityInWorld((Entity)entityItem);
+                    entityItem.motionX = (float) random.nextGaussian() * var13;
+                    entityItem.motionY = (float) random.nextGaussian() * var13 + 0.2f;
+                    entityItem.motionZ = (float) random.nextGaussian() * var13;
+                    par1World.spawnEntityInWorld((Entity) entityItem);
                 }
             }
         }
     }
 
     @Override
-    public boolean onUseWrench(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ) {
+    public boolean onUseWrench(
+        World par1World,
+        int x,
+        int y,
+        int z,
+        EntityPlayer par5EntityPlayer,
+        int side,
+        float hitX,
+        float hitY,
+        float hitZ
+    ) {
         TileEntity tileEntity = par1World.getTileEntity(x, y, z);
         if (tileEntity instanceof TileEntityImprinter) {
-            ((TileEntityImprinter)tileEntity).searchInventories = !((TileEntityImprinter)tileEntity).searchInventories;
+            ((TileEntityImprinter) tileEntity).searchInventories
+                = !((TileEntityImprinter) tileEntity).searchInventories;
             par1World.markBlockForUpdate(x, y, z);
             return true;
         }
@@ -114,4 +147,3 @@ extends BlockALMachine {
         return new TileEntityImprinter();
     }
 }
-

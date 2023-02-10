@@ -4,8 +4,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class TabAssemblyLine
-extends CreativeTabs {
+public class TabAssemblyLine extends CreativeTabs {
     public static final TabAssemblyLine INSTANCE = new TabAssemblyLine("assemblyline");
     public static ItemStack itemStack;
 
@@ -22,4 +21,3 @@ extends CreativeTabs {
         return itemStack.getItem();
     }
 }
-

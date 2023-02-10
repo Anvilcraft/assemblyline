@@ -6,8 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class BlockBeltSorter
-extends BlockALMachine {
+public class BlockBeltSorter extends BlockALMachine {
     public BlockBeltSorter() {
         super(Material.iron);
         this.setCreativeTab(TabAssemblyLine.INSTANCE);
@@ -20,4 +19,3 @@ extends BlockALMachine {
         return null;
     }
 }
-

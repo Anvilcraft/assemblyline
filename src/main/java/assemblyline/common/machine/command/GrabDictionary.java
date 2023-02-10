@@ -2,6 +2,7 @@ package assemblyline.common.machine.command;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityItem;
@@ -35,16 +36,18 @@ public class GrabDictionary {
 
     public static GrabDictionary get(Object ob) {
         if (ob instanceof String) {
-            String name = (String)ob;
+            String name = (String) ob;
             for (GrabDictionary ref : grabList) {
-                if (!ref.getName().equalsIgnoreCase(name)) continue;
+                if (!ref.getName().equalsIgnoreCase(name))
+                    continue;
                 return ref;
             }
         }
         if (ob instanceof Class) {
-            Class cc = (Class)ob;
+            Class cc = (Class) ob;
             for (GrabDictionary ref : grabList) {
-                if (ref.getEntityClass() != cc) continue;
+                if (ref.getEntityClass() != cc)
+                    continue;
                 return ref;
             }
         }
@@ -69,7 +72,8 @@ public class GrabDictionary {
         GrabDictionary newGrab = new GrabDictionary(name, eClass);
         if (!grabList.contains(newGrab)) {
             for (GrabDictionary ref : grabList) {
-                if (!ref.getName().equalsIgnoreCase(name)) continue;
+                if (!ref.getName().equalsIgnoreCase(name))
+                    continue;
                 return;
             }
             GrabDictionary.getList().add(newGrab);
@@ -99,4 +103,3 @@ public class GrabDictionary {
         GrabDictionary.registerGrabableEntity("cart", EntityMinecart.class);
     }
 }
-

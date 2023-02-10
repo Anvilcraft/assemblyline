@@ -7,22 +7,29 @@ import net.minecraftforge.common.util.ForgeDirection;
 import universalelectricity.core.electricity.ElectricityPack;
 import universalelectricity.prefab.tile.TileEntityElectricityRunnable;
 
-public abstract class TileEntityAssemblyNetwork
-extends TileEntityElectricityRunnable {
+public abstract class TileEntityAssemblyNetwork extends TileEntityElectricityRunnable {
     public int powerTransferRange = 0;
 
     public boolean isRunning() {
-        return AssemblyLine.REQUIRE_NO_POWER || this.powerTransferRange > 0 || this.wattsReceived > this.getRequest().getWatts();
+        return AssemblyLine.REQUIRE_NO_POWER || this.powerTransferRange > 0
+            || this.wattsReceived > this.getRequest().getWatts();
     }
 
     public void updatePowerTransferRange() {
         int maximumTransferRange = 0;
         for (int i = 0; i < 6; ++i) {
-            ForgeDirection direction = ForgeDirection.getOrientation((int)i);
-            TileEntity tileEntity = this.worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
-            if (tileEntity == null || !(tileEntity instanceof TileEntityAssemblyNetwork)) continue;
-            TileEntityAssemblyNetwork assemblyNetwork = (TileEntityAssemblyNetwork)tileEntity;
-            if (assemblyNetwork.powerTransferRange <= maximumTransferRange) continue;
+            ForgeDirection direction = ForgeDirection.getOrientation((int) i);
+            TileEntity tileEntity = this.worldObj.getTileEntity(
+                this.xCoord + direction.offsetX,
+                this.yCoord + direction.offsetY,
+                this.zCoord + direction.offsetZ
+            );
+            if (tileEntity == null || !(tileEntity instanceof TileEntityAssemblyNetwork))
+                continue;
+            TileEntityAssemblyNetwork assemblyNetwork
+                = (TileEntityAssemblyNetwork) tileEntity;
+            if (assemblyNetwork.powerTransferRange <= maximumTransferRange)
+                continue;
             maximumTransferRange = assemblyNetwork.powerTransferRange;
         }
         this.powerTransferRange = Math.max(maximumTransferRange - 1, 0);
@@ -46,8 +53,7 @@ extends TileEntityElectricityRunnable {
         }
     }
 
-    protected void onUpdate() {
-    }
+    protected void onUpdate() {}
 
     @Override
     public ElectricityPack getRequest() {
@@ -70,4 +76,3 @@ extends TileEntityElectricityRunnable {
         this.wattsReceived = nbt.getDouble("wattsReceived");
     }
 }
-

@@ -4,3 +4,6 @@ build
 run
 bin
 off
+.settings
+.classpath
+.project

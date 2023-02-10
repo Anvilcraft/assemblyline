@@ -5,8 +5,7 @@ import assemblyline.common.machine.TileEntityAssemblyNetwork;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityCraneRail
-extends TileEntityAssemblyNetwork
-implements ICraneStructure {
+    extends TileEntityAssemblyNetwork implements ICraneStructure {
     @Override
     public boolean canFrameConnectTo(ForgeDirection side) {
         return true;
@@ -17,4 +16,3 @@ implements ICraneStructure {
         return false;
     }
 }
-

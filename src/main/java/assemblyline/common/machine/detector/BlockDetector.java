@@ -20,8 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import universalelectricity.core.UniversalElectricity;
 
-public class BlockDetector
-extends BlockImprintable {
+public class BlockDetector extends BlockImprintable {
     IIcon eye_red;
     IIcon eye_green;
 
@@ -30,8 +29,12 @@ extends BlockImprintable {
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
-        int angle = MathHelper.floor_double((double)((double)(entity.rotationYaw * 4.0f / 360.0f) + 0.5)) & 3;
+    public void onBlockPlacedBy(
+        World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack
+    ) {
+        int angle = MathHelper.floor_double((double
+                    ) ((double) (entity.rotationYaw * 4.0f / 360.0f) + 0.5))
+            & 3;
         int change = 2;
         switch (angle) {
             case 0: {
@@ -60,7 +63,7 @@ extends BlockImprintable {
     }
 
     @Override
-    @SideOnly(value=Side.CLIENT)
+    @SideOnly(value = Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconReg) {
         super.registerBlockIcons(iconReg);
         this.eye_green = iconReg.registerIcon("assemblyline:detector_green");
@@ -70,8 +73,12 @@ extends BlockImprintable {
     @Override
     public IIcon getIcon(IBlockAccess iBlockAccess, int x, int y, int z, int side) {
         TileEntity tileEntity = iBlockAccess.getTileEntity(x, y, z);
-        if (tileEntity instanceof TileEntityDetector && side == ForgeDirection.getOrientation((int)iBlockAccess.getBlockMetadata(x, y, z)).ordinal()) {
-            if (((TileEntityDetector)tileEntity).isInverted()) {
+        if (tileEntity instanceof TileEntityDetector
+            && side
+                == ForgeDirection
+                       .getOrientation((int) iBlockAccess.getBlockMetadata(x, y, z))
+                       .ordinal()) {
+            if (((TileEntityDetector) tileEntity).isInverted()) {
                 return this.eye_red;
             }
             return this.eye_green;
@@ -88,7 +95,17 @@ extends BlockImprintable {
     }
 
     @Override
-    public boolean onUseWrench(World world, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ) {
+    public boolean onUseWrench(
+        World world,
+        int x,
+        int y,
+        int z,
+        EntityPlayer par5EntityPlayer,
+        int side,
+        float hitX,
+        float hitY,
+        float hitZ
+    ) {
         world.setBlockMetadataWithNotify(x, y, z, side, 3);
         return true;
     }
@@ -111,11 +128,13 @@ extends BlockImprintable {
     }
 
     @Override
-    public boolean isBlockSolid(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5) {
+    public boolean
+    isBlockSolid(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5) {
         return false;
     }
 
-    public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
+    public boolean
+    isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
         return false;
     }
 
@@ -125,16 +144,19 @@ extends BlockImprintable {
     }
 
     @Override
-    public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int direction) {
+    public int
+    isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int direction) {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (tileEntity instanceof TileEntityDetector) {
-            return ((TileEntityDetector)tileEntity).isPoweringTo(ForgeDirection.getOrientation((int)direction));
+            return ((TileEntityDetector) tileEntity)
+                .isPoweringTo(ForgeDirection.getOrientation((int) direction));
         }
         return 0;
     }
 
     @Override
-    public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int direction) {
+    public int
+    isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int direction) {
         return this.isProvidingStrongPower(world, x, y, z, direction);
     }
 
@@ -143,4 +165,3 @@ extends BlockImprintable {
         return new TileEntityDetector();
     }
 }
-

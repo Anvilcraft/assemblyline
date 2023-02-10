@@ -11,31 +11,58 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import universalelectricity.core.UniversalElectricity;
 
-public class BlockManipulator
-extends BlockImprintable {
+public class BlockManipulator extends BlockImprintable {
     public BlockManipulator() {
         super("manipulator", UniversalElectricity.machine, TabAssemblyLine.INSTANCE);
         this.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 0.29f, 1.0f);
     }
 
     public AxisAlignedBB func_71911_a_(World par1World, int par2, int par3, int par4) {
-        return AxisAlignedBB.getBoundingBox((double)par2, (double)par3, (double)par4, (double)par2 + 1.0, (double)par3 + 1.0, (double)par4 + 1.0);
+        return AxisAlignedBB.getBoundingBox(
+            (double) par2,
+            (double) par3,
+            (double) par4,
+            (double) par2 + 1.0,
+            (double) par3 + 1.0,
+            (double) par4 + 1.0
+        );
     }
 
     @Override
-    public boolean onSneakMachineActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ) {
+    public boolean onSneakMachineActivated(
+        World world,
+        int x,
+        int y,
+        int z,
+        EntityPlayer entityPlayer,
+        int side,
+        float hitX,
+        float hitY,
+        float hitZ
+    ) {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (tileEntity instanceof TileEntityManipulator) {
-            ((TileEntityManipulator)tileEntity).selfPulse = !((TileEntityManipulator)tileEntity).selfPulse;
+            ((TileEntityManipulator) tileEntity).selfPulse
+                = !((TileEntityManipulator) tileEntity).selfPulse;
         }
         return true;
     }
 
     @Override
-    public boolean onSneakUseWrench(World world, int x, int y, int z, EntityPlayer par5EntityPlayer, int side, float hitX, float hitY, float hitZ) {
+    public boolean onSneakUseWrench(
+        World world,
+        int x,
+        int y,
+        int z,
+        EntityPlayer par5EntityPlayer,
+        int side,
+        float hitX,
+        float hitY,
+        float hitZ
+    ) {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (tileEntity instanceof TileEntityManipulator) {
-            TileEntityManipulator manip = (TileEntityManipulator)tileEntity;
+            TileEntityManipulator manip = (TileEntityManipulator) tileEntity;
             boolean manipMode = manip.isOutput();
             boolean inverted = manip.isInverted();
             if (manipMode && !inverted) {
@@ -59,7 +86,7 @@ extends BlockImprintable {
     }
 
     @Override
-    @SideOnly(value=Side.CLIENT)
+    @SideOnly(value = Side.CLIENT)
     public int getRenderType() {
         return BlockRenderingHandler.BLOCK_RENDER_ID;
     }
@@ -79,4 +106,3 @@ extends BlockImprintable {
         return 0;
     }
 }
-

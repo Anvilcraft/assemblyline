@@ -1,5 +1,7 @@
 package assemblyline.common.machine.command;
 
+import java.util.HashMap;
+
 import assemblyline.common.machine.armbot.TileEntityArmbot;
 import assemblyline.common.machine.command.CommandBreak;
 import assemblyline.common.machine.command.CommandDrop;
@@ -15,7 +17,6 @@ import assemblyline.common.machine.command.CommandReturn;
 import assemblyline.common.machine.command.CommandRotateBy;
 import assemblyline.common.machine.command.CommandRotateTo;
 import assemblyline.common.machine.command.CommandUse;
-import java.util.HashMap;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
@@ -34,11 +35,11 @@ public abstract class Command {
     }
 
     public static Class getCommand(String command) {
-        return (Class)COMMANDS.get(command.toLowerCase());
+        return (Class) COMMANDS.get(command.toLowerCase());
     }
 
     public static String getCommandName(Class command) {
-        return (String)REVERSE_LOOKUP.get(command);
+        return (String) REVERSE_LOOKUP.get(command);
     }
 
     protected boolean doTask() {
@@ -46,11 +47,9 @@ public abstract class Command {
         return false;
     }
 
-    public void onTaskStart() {
-    }
+    public void onTaskStart() {}
 
-    public void onTaskEnd() {
-    }
+    public void onTaskEnd() {}
 
     public int getTickInterval() {
         return 1;
@@ -75,8 +74,7 @@ public abstract class Command {
         if (this.getArg(i) != null) {
             try {
                 return Integer.parseInt(this.getArg(i));
-            }
-            catch (Exception exception) {
+            } catch (Exception exception) {
                 // empty catch block
             }
         }
@@ -87,8 +85,7 @@ public abstract class Command {
         if (this.getArg(i) != null) {
             try {
                 return Double.parseDouble(this.getArg(i));
-            }
-            catch (Exception exception) {
+            } catch (Exception exception) {
                 // empty catch block
             }
         }
@@ -99,8 +96,7 @@ public abstract class Command {
         if (this.getArg(i) != null) {
             try {
                 return Float.valueOf(Float.parseFloat(this.getArg(i)));
-            }
-            catch (Exception exception) {
+            } catch (Exception exception) {
                 // empty catch block
             }
         }
@@ -135,4 +131,3 @@ public abstract class Command {
         Command.registerCommand("harvest", CommandHarvest.class);
     }
 }
-

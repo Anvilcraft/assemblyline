@@ -1,5 +1,9 @@
 package assemblyline.common.machine.armbot;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import assemblyline.api.IArmbot;
 import assemblyline.common.AssemblyLine;
 import assemblyline.common.machine.TileEntityAssemblyNetwork;
@@ -20,10 +24,6 @@ import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import dark.library.helpers.ItemFindingHelper;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityItem;
@@ -47,13 +47,8 @@ import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.TranslationHelper;
 import universalelectricity.prefab.multiblock.IMultiBlock;
 
-public class TileEntityArmbot
-extends TileEntityAssemblyNetwork
-implements IMultiBlock,
-IInventory,
-IElectricityStorage,
-IArmbot,
-IPeripheral {
+public class TileEntityArmbot extends TileEntityAssemblyNetwork
+    implements IMultiBlock, IInventory, IElectricityStorage, IArmbot, IPeripheral {
     private final CommandManager commandManager = new CommandManager();
     private static final int PACKET_COMMANDS = 128;
     protected ItemStack disk = null;
@@ -78,17 +73,20 @@ IPeripheral {
     public void onUpdate() {
         Vector3 handPosition = this.getHandPosition();
         for (Entity entity : this.grabbedEntities) {
-            if (entity == null) continue;
+            if (entity == null)
+                continue;
             entity.setPosition(handPosition.x, handPosition.y, handPosition.z);
             entity.motionX = 0.0;
             entity.motionY = 0.0;
             entity.motionZ = 0.0;
-            if (!(entity instanceof EntityItem)) continue;
-            ((EntityItem)entity).delayBeforeCanPickup = 20;
-            ((EntityItem)entity).age = 0;
+            if (!(entity instanceof EntityItem))
+                continue;
+            ((EntityItem) entity).delayBeforeCanPickup = 20;
+            ((EntityItem) entity).age = 0;
         }
         if (this.isRunning()) {
-            if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER && this.disk == null && this.computersAttached == 0) {
+            if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER
+                && this.disk == null && this.computersAttached == 0) {
                 this.commandManager.clear();
                 if (this.grabbedEntities.size() > 0 || this.grabbedItems.size() > 0) {
                     this.addCommand(CommandDrop.class);
@@ -109,12 +107,13 @@ IPeripheral {
                 this.displayText = "";
             } else {
                 try {
-                    Command curCommand = (Command)this.commandManager.getCommands().get(this.commandManager.getCurrentTask());
+                    Command curCommand = (Command) this.commandManager.getCommands().get(
+                        this.commandManager.getCurrentTask()
+                    );
                     if (curCommand != null) {
                         this.displayText = curCommand.toString();
                     }
-                }
-                catch (Exception ex) {
+                } catch (Exception ex) {
                     // empty catch block
                 }
             }
@@ -143,15 +142,34 @@ IPeripheral {
             while (this.renderYaw > 360.0f) {
                 this.renderYaw -= 360.0f;
             }
-            if (this.ticks % 5L == 0L && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
-                this.worldObj.playSound((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, "assemblyline:conveyor", 0.8f, 1.7f, true);
+            if (this.ticks % 5L == 0L
+                && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+                this.worldObj.playSound(
+                    (double) this.xCoord,
+                    (double) this.yCoord,
+                    (double) this.zCoord,
+                    "assemblyline:conveyor",
+                    0.8f,
+                    1.7f,
+                    true
+                );
             }
             float f = Math.abs(this.renderYaw - this.rotationYaw);
             this.getClass();
             if (f < 1.3f + 0.1f) {
                 this.renderYaw = this.rotationYaw;
             }
-            for (Entity e : (List<Entity>)this.worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox((double)this.xCoord, (double)(this.yCoord + 2), (double)this.zCoord, (double)(this.xCoord + 1), (double)(this.yCoord + 3), (double)(this.zCoord + 1)))) {
+            for (Entity e : (List<Entity>) this.worldObj.getEntitiesWithinAABB(
+                     Entity.class,
+                     AxisAlignedBB.getBoundingBox(
+                         (double) this.xCoord,
+                         (double) (this.yCoord + 2),
+                         (double) this.zCoord,
+                         (double) (this.xCoord + 1),
+                         (double) (this.yCoord + 3),
+                         (double) (this.zCoord + 1)
+                     )
+                 )) {
                 e.rotationYaw = this.renderYaw;
             }
         }
@@ -171,15 +189,34 @@ IPeripheral {
             while (this.renderPitch > 60.0f) {
                 this.renderPitch -= 60.0f;
             }
-            if (this.ticks % 4L == 0L && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
-                this.worldObj.playSound((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, "assemblyline:conveyor", 2.0f, 2.5f, true);
+            if (this.ticks % 4L == 0L
+                && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+                this.worldObj.playSound(
+                    (double) this.xCoord,
+                    (double) this.yCoord,
+                    (double) this.zCoord,
+                    "assemblyline:conveyor",
+                    2.0f,
+                    2.5f,
+                    true
+                );
             }
             float f = Math.abs(this.renderPitch - this.rotationPitch);
             this.getClass();
             if (f < 1.3f + 0.1f) {
                 this.renderPitch = this.rotationPitch;
             }
-            for (Entity e : (List<Entity>)this.worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox((double)this.xCoord, (double)(this.yCoord + 2), (double)this.zCoord, (double)(this.xCoord + 1), (double)(this.yCoord + 3), (double)(this.zCoord + 1)))) {
+            for (Entity e : (List<Entity>) this.worldObj.getEntitiesWithinAABB(
+                     Entity.class,
+                     AxisAlignedBB.getBoundingBox(
+                         (double) this.xCoord,
+                         (double) (this.yCoord + 2),
+                         (double) this.zCoord,
+                         (double) (this.xCoord + 1),
+                         (double) (this.yCoord + 3),
+                         (double) (this.zCoord + 1)
+                     )
+                 )) {
                 e.rotationPitch = this.renderPitch;
             }
         }
@@ -195,14 +232,19 @@ IPeripheral {
         while (this.rotationPitch > 60.0f) {
             this.rotationPitch -= 60.0f;
         }
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER && this.ticks % 20L == 0L) {
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER
+            && this.ticks % 20L == 0L) {
             this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
     }
 
     public Command getCurrentCommand() {
-        if (this.commandManager.hasTasks() && this.commandManager.getCurrentTask() >= 0 && this.commandManager.getCurrentTask() < this.commandManager.getCommands().size()) {
-            return (Command)this.commandManager.getCommands().get(this.commandManager.getCurrentTask());
+        if (this.commandManager.hasTasks() && this.commandManager.getCurrentTask() >= 0
+            && this.commandManager.getCurrentTask()
+                < this.commandManager.getCommands().size()) {
+            return (Command) this.commandManager.getCommands().get(
+                this.commandManager.getCurrentTask()
+            );
         }
         return null;
     }
@@ -231,7 +273,9 @@ IPeripheral {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setTag("data", data);
         nbt.setInteger("transferRange", this.powerTransferRange);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, getBlockMetadata(), nbt);
+        return new S35PacketUpdateTileEntity(
+            xCoord, yCoord, zCoord, getBlockMetadata(), nbt
+        );
     }
 
     @Override
@@ -299,7 +343,13 @@ IPeripheral {
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq((double)this.xCoord + 0.5, (double)this.yCoord + 0.5, (double)this.zCoord + 0.5) <= 64.0;
+        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this
+            ? false
+            : par1EntityPlayer.getDistanceSq(
+                  (double) this.xCoord + 0.5,
+                  (double) this.yCoord + 0.5,
+                  (double) this.zCoord + 0.5
+              ) <= 64.0;
     }
 
     @Override
@@ -320,7 +370,9 @@ IPeripheral {
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         NBTTagCompound diskNBT = nbt.getCompoundTag("disk");
-        this.disk = diskNBT != null ? ItemStack.loadItemStackFromNBT((NBTTagCompound)diskNBT) : null;
+        this.disk = diskNBT != null
+            ? ItemStack.loadItemStackFromNBT((NBTTagCompound) diskNBT)
+            : null;
         this.rotationYaw = nbt.getFloat("yaw");
         this.rotationPitch = nbt.getFloat("pitch");
         if (this.worldObj != null && this.worldObj.isRemote) {
@@ -330,17 +382,21 @@ IPeripheral {
         NBTTagList entities = nbt.getTagList("entities", 10);
         this.grabbedEntities.clear();
         for (int i = 0; i < entities.tagCount(); ++i) {
-            NBTTagCompound entityTag = (NBTTagCompound)entities.getCompoundTagAt(i);
-            if (entityTag == null) continue;
-            Entity entity = EntityList.createEntityFromNBT((NBTTagCompound)entityTag, (World)this.worldObj);
+            NBTTagCompound entityTag = (NBTTagCompound) entities.getCompoundTagAt(i);
+            if (entityTag == null)
+                continue;
+            Entity entity = EntityList.createEntityFromNBT(
+                (NBTTagCompound) entityTag, (World) this.worldObj
+            );
             this.grabbedEntities.add(entity);
         }
         NBTTagList items = nbt.getTagList("items", 10);
         this.grabbedItems.clear();
         for (int i = 0; i < items.tagCount(); ++i) {
-            NBTTagCompound itemTag = (NBTTagCompound)items.getCompoundTagAt(i);
-            if (itemTag == null) continue;
-            ItemStack item = ItemStack.loadItemStackFromNBT((NBTTagCompound)itemTag);
+            NBTTagCompound itemTag = (NBTTagCompound) items.getCompoundTagAt(i);
+            if (itemTag == null)
+                continue;
+            ItemStack item = ItemStack.loadItemStackFromNBT((NBTTagCompound) itemTag);
             this.grabbedItems.add(item);
         }
     }
@@ -352,28 +408,30 @@ IPeripheral {
         if (this.disk != null) {
             this.disk.writeToNBT(diskNBT);
         }
-        nbt.setTag("disk", (NBTBase)diskNBT);
+        nbt.setTag("disk", (NBTBase) diskNBT);
         nbt.setFloat("yaw", this.rotationYaw);
         nbt.setFloat("pitch", this.rotationPitch);
         nbt.setString("cmdText", this.displayText);
         nbt.setInteger("curTask", this.commandManager.getCurrentTask());
         NBTTagList entities = new NBTTagList();
         for (Entity entity : this.grabbedEntities) {
-            if (entity == null) continue;
+            if (entity == null)
+                continue;
             NBTTagCompound entityNBT = new NBTTagCompound();
             entity.writeToNBT(entityNBT);
             entity.writeToNBTOptional(entityNBT);
-            entities.appendTag((NBTBase)entityNBT);
+            entities.appendTag((NBTBase) entityNBT);
         }
-        nbt.setTag("entities", (NBTBase)entities);
+        nbt.setTag("entities", (NBTBase) entities);
         NBTTagList items = new NBTTagList();
         for (ItemStack itemStack : this.grabbedItems) {
-            if (itemStack == null) continue;
+            if (itemStack == null)
+                continue;
             NBTTagCompound entityNBT = new NBTTagCompound();
             itemStack.writeToNBT(entityNBT);
-            items.appendTag((NBTBase)entityNBT);
+            items.appendTag((NBTBase) entityNBT);
         }
-        nbt.setTag("items", (NBTBase)items);
+        nbt.setTag("items", (NBTBase) items);
     }
 
     @Override
@@ -396,14 +454,17 @@ IPeripheral {
         ItemStack containingStack = this.getStackInSlot(0);
         if (containingStack != null) {
             if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
-                EntityItem dropStack = new EntityItem(this.worldObj, player.posX, player.posY, player.posZ, containingStack);
+                EntityItem dropStack = new EntityItem(
+                    this.worldObj, player.posX, player.posY, player.posZ, containingStack
+                );
                 dropStack.delayBeforeCanPickup = 0;
-                this.worldObj.spawnEntityInWorld((Entity)dropStack);
+                this.worldObj.spawnEntityInWorld((Entity) dropStack);
             }
             this.setInventorySlotContents(0, null);
             return true;
         }
-        if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemDisk) {
+        if (player.getCurrentEquippedItem() != null
+            && player.getCurrentEquippedItem().getItem() instanceof ItemDisk) {
             this.setInventorySlotContents(0, player.getCurrentEquippedItem());
             player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
             return true;
@@ -418,10 +479,12 @@ IPeripheral {
             for (String commandString : commands) {
                 String commandName = commandString.split(" ")[0];
                 Class command = Command.getCommand(commandName);
-                if (command == null) continue;
+                if (command == null)
+                    continue;
                 ArrayList<String> commandParameters = new ArrayList<String>();
                 for (String param : commandString.split(" ")) {
-                    if (param.equals(commandName)) continue;
+                    if (param.equals(commandName))
+                        continue;
                     commandParameters.add(param);
                 }
                 this.addCommand(command, commandParameters.toArray(new String[0]));
@@ -448,13 +511,19 @@ IPeripheral {
 
     @Override
     public void onCreate(Vector3 placedPosition) {
-        AssemblyLine.blockMulti.makeFakeBlock(this.worldObj, Vector3.add(placedPosition, new Vector3(0.0, 1.0, 0.0)), placedPosition);
+        AssemblyLine.blockMulti.makeFakeBlock(
+            this.worldObj,
+            Vector3.add(placedPosition, new Vector3(0.0, 1.0, 0.0)),
+            placedPosition
+        );
     }
 
     @Override
     public void onDestroy(TileEntity callingBlock) {
         this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, Blocks.air, 0, 3);
-        this.worldObj.setBlock(this.xCoord, this.yCoord + 1, this.zCoord, Blocks.air, 0, 3);
+        this.worldObj.setBlock(
+            this.xCoord, this.yCoord + 1, this.zCoord, Blocks.air, 0, 3
+        );
     }
 
     @Override
@@ -464,21 +533,27 @@ IPeripheral {
 
     @Override
     public String[] getMethodNames() {
-        return new String[]{"rotateBy", "rotateTo", "grab", "drop", "reset", "isWorking", "touchingEntity", "use", "fire", "return", "clear", "isHolding"};
+        return new String[] { "rotateBy", "rotateTo",  "grab",           "drop",
+                              "reset",    "isWorking", "touchingEntity", "use",
+                              "fire",     "return",    "clear",          "isHolding" };
     }
 
     @Override
-    public Object[] callMethod( IComputerAccess computer, ILuaContext context, int method, Object[] arguments ) throws LuaException, InterruptedException {
+    public Object[] callMethod(
+        IComputerAccess computer, ILuaContext context, int method, Object[] arguments
+    ) throws LuaException, InterruptedException {
         switch (method) {
             case 0: {
                 if (arguments.length > 0) {
                     try {
-                        double yaw = (Double)arguments[0];
-                        double pitch = (Double)arguments[1];
-                        this.addCommand(CommandRotateBy.class, new String[]{Double.toString(yaw), Double.toString(pitch)});
+                        double yaw = (Double) arguments[0];
+                        double pitch = (Double) arguments[1];
+                        this.addCommand(
+                            CommandRotateBy.class,
+                            new String[] { Double.toString(yaw), Double.toString(pitch) }
+                        );
                         break;
-                    }
-                    catch (Exception ex) {
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                         throw new IllegalArgumentException("expected number");
                     }
@@ -488,12 +563,14 @@ IPeripheral {
             case 1: {
                 if (arguments.length > 0) {
                     try {
-                        double yaw = (Double)arguments[0];
-                        double pitch = (Double)arguments[1];
-                        this.addCommand(CommandRotateTo.class, new String[]{Double.toString(yaw), Double.toString(pitch)});
+                        double yaw = (Double) arguments[0];
+                        double pitch = (Double) arguments[1];
+                        this.addCommand(
+                            CommandRotateTo.class,
+                            new String[] { Double.toString(yaw), Double.toString(pitch) }
+                        );
                         break;
-                    }
-                    catch (Exception ex) {
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                         throw new IllegalArgumentException("expected number");
                     }
@@ -514,27 +591,40 @@ IPeripheral {
                 break;
             }
             case 5: {
-                return new Object[]{this.commandManager.hasTasks()};
+                return new Object[] { this.commandManager.hasTasks() };
             }
             case 6: {
                 Vector3 serachPosition = this.getHandPosition();
-                List found = this.worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox((double)(serachPosition.x - 0.5), (double)(serachPosition.y - 0.5), (double)(serachPosition.z - 0.5), (double)(serachPosition.x + 0.5), (double)(serachPosition.y + 0.5), (double)(serachPosition.z + 0.5)));
+                List found = this.worldObj.getEntitiesWithinAABB(
+                    Entity.class,
+                    AxisAlignedBB.getBoundingBox(
+                        (double) (serachPosition.x - 0.5),
+                        (double) (serachPosition.y - 0.5),
+                        (double) (serachPosition.z - 0.5),
+                        (double) (serachPosition.x + 0.5),
+                        (double) (serachPosition.y + 0.5),
+                        (double) (serachPosition.z + 0.5)
+                    )
+                );
                 if (found != null && found.size() > 0) {
                     for (int i = 0; i < found.size(); ++i) {
-                        if (found.get(i) == null || found.get(i) instanceof EntityPlayer || ((Entity)found.get((int)i)).ridingEntity != null) continue;
-                        return new Object[]{true};
+                        if (found.get(i) == null || found.get(i) instanceof EntityPlayer
+                            || ((Entity) found.get((int) i)).ridingEntity != null)
+                            continue;
+                        return new Object[] { true };
                     }
                 }
-                return new Object[]{false};
+                return new Object[] { false };
             }
             case 7: {
                 if (arguments.length > 0) {
                     try {
-                        int times = (Integer)arguments[0];
-                        this.addCommand(CommandUse.class, new String[]{Integer.toString(times)});
+                        int times = (Integer) arguments[0];
+                        this.addCommand(
+                            CommandUse.class, new String[] { Integer.toString(times) }
+                        );
                         break;
-                    }
-                    catch (Exception ex) {
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                         throw new IllegalArgumentException("expected number");
                     }
@@ -545,11 +635,12 @@ IPeripheral {
             case 8: {
                 if (arguments.length > 0) {
                     try {
-                        float strength = (float)((Double)arguments[0]).doubleValue();
-                        this.addCommand(CommandFire.class, new String[]{Float.toString(strength)});
+                        float strength = (float) ((Double) arguments[0]).doubleValue();
+                        this.addCommand(
+                            CommandFire.class, new String[] { Float.toString(strength) }
+                        );
                         break;
-                    }
-                    catch (Exception ex) {
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                         throw new IllegalArgumentException("expected number");
                     }
@@ -566,7 +657,7 @@ IPeripheral {
                 break;
             }
             case 11: {
-                return new Object[]{this.grabbedEntities.size() > 0};
+                return new Object[] { this.grabbedEntities.size() > 0 };
             }
         }
         return null;
@@ -609,7 +700,7 @@ IPeripheral {
     @Override
     public void grabEntity(Entity entity) {
         if (entity instanceof EntityItem) {
-            this.grabItem(((EntityItem)entity).getEntityItem());
+            this.grabItem(((EntityItem) entity).getEntityItem());
             entity.setDead();
         } else {
             this.grabbedEntities.add(entity);
@@ -623,14 +714,16 @@ IPeripheral {
 
     @Override
     public void dropEntity(Entity entity) {
-        this.grabbedEntities.remove((Object)entity);
+        this.grabbedEntities.remove((Object) entity);
     }
 
     @Override
     public void dropItem(ItemStack itemStack) {
         Vector3 handPosition = this.getHandPosition();
-        this.worldObj.spawnEntityInWorld((Entity)new EntityItem(this.worldObj, handPosition.x, handPosition.y, handPosition.z, itemStack));
-        this.grabbedItems.remove((Object)itemStack);
+        this.worldObj.spawnEntityInWorld((Entity) new EntityItem(
+            this.worldObj, handPosition.x, handPosition.y, handPosition.z, itemStack
+        ));
+        this.grabbedItems.remove((Object) itemStack);
     }
 
     @Override
@@ -638,18 +731,25 @@ IPeripheral {
         Vector3 handPosition = this.getHandPosition();
         Iterator it = this.grabbedItems.iterator();
         while (it.hasNext()) {
-            ItemFindingHelper.dropItemStackExact(this.worldObj, handPosition.x, handPosition.y, handPosition.z, (ItemStack)it.next());
+            ItemFindingHelper.dropItemStackExact(
+                this.worldObj,
+                handPosition.x,
+                handPosition.y,
+                handPosition.z,
+                (ItemStack) it.next()
+            );
         }
         this.grabbedEntities.clear();
         this.grabbedItems.clear();
     }
 
     public boolean isProvidingPowerSide(ForgeDirection dir) {
-        return this.isProvidingPower && dir.getOpposite() == this.getFacingDirectionFromAngle();
+        return this.isProvidingPower
+            && dir.getOpposite() == this.getFacingDirectionFromAngle();
     }
 
     public ForgeDirection getFacingDirectionFromAngle() {
-        float angle = MathHelper.wrapAngleTo180_float((float)this.rotationYaw);
+        float angle = MathHelper.wrapAngleTo180_float((float) this.rotationYaw);
         if (angle >= -45.0f && angle <= 45.0f) {
             return ForgeDirection.SOUTH;
         }
@@ -681,4 +781,3 @@ IPeripheral {
         return super.equals(other);
     }
 }
-

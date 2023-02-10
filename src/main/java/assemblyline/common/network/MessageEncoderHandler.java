@@ -8,16 +8,16 @@ import cpw.mods.fml.relauncher.Side;
 import net.minecraft.tileentity.TileEntity;
 
 public class MessageEncoderHandler implements IMessageHandler<MessageEncoder, IMessage> {
-
     @Override
     public IMessage onMessage(MessageEncoder msg, MessageContext ctx) {
         if (ctx.side == Side.SERVER) {
-            TileEntity tile = msg.tileLocation.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
+            TileEntity tile = msg.tileLocation.getTileEntity(
+                ctx.getServerHandler().playerEntity.worldObj
+            );
             if (tile instanceof TileEntityEncoder) {
-                ((TileEntityEncoder)tile).handleMessage(msg.nbt);
+                ((TileEntityEncoder) tile).handleMessage(msg.nbt);
             }
         }
         return null;
     }
-    
 }

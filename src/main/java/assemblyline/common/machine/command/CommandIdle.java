@@ -3,8 +3,7 @@ package assemblyline.common.machine.command;
 import assemblyline.common.machine.command.Command;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class CommandIdle
-extends Command {
+public class CommandIdle extends Command {
     public int idleTime = 80;
     private int totalIdleTime = 80;
 
@@ -44,4 +43,3 @@ extends Command {
         return "IDLE " + Integer.toString(this.totalIdleTime);
     }
 }
-

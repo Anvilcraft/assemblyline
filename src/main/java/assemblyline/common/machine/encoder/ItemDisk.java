@@ -1,10 +1,11 @@
 package assemblyline.common.machine.encoder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import assemblyline.common.TabAssemblyLine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -13,8 +14,7 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-public class ItemDisk
-extends Item {
+public class ItemDisk extends Item {
     public ItemDisk() {
         super();
         this.setUnlocalizedName("disk");
@@ -23,7 +23,7 @@ extends Item {
     }
 
     @Override
-    @SideOnly(value=Side.CLIENT)
+    @SideOnly(value = Side.CLIENT)
     public void registerIcons(IIconRegister par1IconRegister) {
         this.itemIcon = par1IconRegister.registerIcon("assemblyline:disk");
     }
@@ -34,7 +34,9 @@ extends Item {
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
+    public void addInformation(
+        ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4
+    ) {
         ArrayList commands = ItemDisk.getCommands(itemStack);
         if (commands.size() > 0) {
             if (commands.size() == 1) {
@@ -53,12 +55,13 @@ extends Item {
         }
         NBTTagList nbt = new NBTTagList();
         for (int i = 0; i < commands.size(); ++i) {
-            if (commands.get(i) == null) continue;
+            if (commands.get(i) == null)
+                continue;
             NBTTagCompound newCompound = new NBTTagCompound();
-            newCompound.setString("command", (String)commands.get(i));
-            nbt.appendTag((NBTBase)newCompound);
+            newCompound.setString("command", (String) commands.get(i));
+            nbt.appendTag((NBTBase) newCompound);
         }
-        itemStack.getTagCompound().setTag("Commands", (NBTBase)nbt);
+        itemStack.getTagCompound().setTag("Commands", (NBTBase) nbt);
     }
 
     public static ArrayList getCommands(ItemStack itemStack) {
@@ -76,4 +79,3 @@ extends Item {
         return commands;
     }
 }
-

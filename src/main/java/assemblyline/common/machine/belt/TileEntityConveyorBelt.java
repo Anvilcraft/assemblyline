@@ -1,14 +1,13 @@
 package assemblyline.common.machine.belt;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import assemblyline.api.IBelt;
 import assemblyline.common.AssemblyLine;
 import assemblyline.common.machine.TileEntityAssemblyNetwork;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
-
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -22,9 +21,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import universalelectricity.prefab.implement.IRotatable;
 
 public class TileEntityConveyorBelt
-extends TileEntityAssemblyNetwork
-implements IBelt,
-IRotatable {
+    extends TileEntityAssemblyNetwork implements IBelt, IRotatable {
     public static final int MAX_FRAME = 13;
     public static final int MAX_SLANT_FRAME = 23;
     public final float acceleration = 0.01f;
@@ -39,11 +36,18 @@ IRotatable {
         ForgeDirection direction;
         int maximumTransferRange = 0;
         for (int i = 0; i < 6; ++i) {
-            direction = ForgeDirection.getOrientation((int)i);
-            TileEntity tileEntity = this.worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
-            if (tileEntity == null || !(tileEntity instanceof TileEntityAssemblyNetwork)) continue;
-            TileEntityAssemblyNetwork assemblyNetwork = (TileEntityAssemblyNetwork)tileEntity;
-            if (assemblyNetwork.powerTransferRange <= maximumTransferRange) continue;
+            direction = ForgeDirection.getOrientation((int) i);
+            TileEntity tileEntity = this.worldObj.getTileEntity(
+                this.xCoord + direction.offsetX,
+                this.yCoord + direction.offsetY,
+                this.zCoord + direction.offsetZ
+            );
+            if (tileEntity == null || !(tileEntity instanceof TileEntityAssemblyNetwork))
+                continue;
+            TileEntityAssemblyNetwork assemblyNetwork
+                = (TileEntityAssemblyNetwork) tileEntity;
+            if (assemblyNetwork.powerTransferRange <= maximumTransferRange)
+                continue;
             maximumTransferRange = assemblyNetwork.powerTransferRange;
         }
         for (int d = 0; d <= 1; ++d) {
@@ -52,10 +56,18 @@ IRotatable {
                 direction = direction.getOpposite();
             }
             for (int i = -1; i <= 1; ++i) {
-                TileEntity tileEntity = this.worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + i, this.zCoord + direction.offsetZ);
-                if (tileEntity == null || !(tileEntity instanceof TileEntityAssemblyNetwork)) continue;
-                TileEntityAssemblyNetwork assemblyNetwork = (TileEntityAssemblyNetwork)tileEntity;
-                if (assemblyNetwork.powerTransferRange <= maximumTransferRange) continue;
+                TileEntity tileEntity = this.worldObj.getTileEntity(
+                    this.xCoord + direction.offsetX,
+                    this.yCoord + i,
+                    this.zCoord + direction.offsetZ
+                );
+                if (tileEntity == null
+                    || !(tileEntity instanceof TileEntityAssemblyNetwork))
+                    continue;
+                TileEntityAssemblyNetwork assemblyNetwork
+                    = (TileEntityAssemblyNetwork) tileEntity;
+                if (assemblyNetwork.powerTransferRange <= maximumTransferRange)
+                    continue;
                 maximumTransferRange = assemblyNetwork.powerTransferRange;
             }
         }
@@ -64,18 +76,35 @@ IRotatable {
 
     @Override
     public void onUpdate() {
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER && this.ticks % 10L == 0L) {
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER
+            && this.ticks % 10L == 0L) {
             this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
         ArrayList<Entity> newList = new ArrayList<Entity>();
         for (Entity ent : this.IgnoreList) {
-            if (!this.getAffectedEntities().contains((Object)ent)) continue;
+            if (!this.getAffectedEntities().contains((Object) ent))
+                continue;
             newList.add(ent);
         }
         this.IgnoreList = newList;
-        if (this.isRunning() && !this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord)) {
-            if (this.ticks % 10L == 0L && this.worldObj.isRemote && this.worldObj.getBlock(this.xCoord - 1, this.yCoord, this.zCoord) != AssemblyLine.blockConveyorBelt && this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord - 1) != AssemblyLine.blockConveyorBelt) {
-                this.worldObj.playSound((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, "assemblyline:conveyor", 0.5f, 0.7f, true);
+        if (this.isRunning()
+            && !this.worldObj.isBlockIndirectlyGettingPowered(
+                this.xCoord, this.yCoord, this.zCoord
+            )) {
+            if (this.ticks % 10L == 0L && this.worldObj.isRemote
+                && this.worldObj.getBlock(this.xCoord - 1, this.yCoord, this.zCoord)
+                    != AssemblyLine.blockConveyorBelt
+                && this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord - 1)
+                    != AssemblyLine.blockConveyorBelt) {
+                this.worldObj.playSound(
+                    (double) this.xCoord,
+                    (double) this.yCoord,
+                    (double) this.zCoord,
+                    "assemblyline:conveyor",
+                    0.5f,
+                    0.7f,
+                    true
+                );
             }
             this.wheelRotation += 40.0f;
             if (this.wheelRotation > 360.0f) {
@@ -83,7 +112,7 @@ IRotatable {
             }
             float wheelRotPct = this.wheelRotation / 360.0f;
             if (this.getSlant() == SlantType.NONE || this.getSlant() == SlantType.TOP) {
-                this.animFrame = (int)(wheelRotPct * 13.0f);
+                this.animFrame = (int) (wheelRotPct * 13.0f);
                 if (this.animFrame < 0) {
                     this.animFrame = 0;
                 }
@@ -91,7 +120,7 @@ IRotatable {
                     this.animFrame = 13;
                 }
             } else {
-                this.animFrame = (int)(wheelRotPct * 23.0f);
+                this.animFrame = (int) (wheelRotPct * 23.0f);
                 if (this.animFrame < 0) {
                     this.animFrame = 0;
                 }
@@ -112,7 +141,9 @@ IRotatable {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setDouble("wattsReceived", this.wattsReceived);
         nbt.setInteger("slantType", this.slantType.ordinal());
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, getBlockMetadata(), nbt);
+        return new S35PacketUpdateTileEntity(
+            xCoord, yCoord, zCoord, getBlockMetadata(), nbt
+        );
     }
 
     public SlantType getSlant() {
@@ -130,11 +161,19 @@ IRotatable {
     public boolean getIsFirstBelt() {
         ForgeDirection front = this.getDirection();
         ForgeDirection back = this.getDirection().getOpposite();
-        TileEntity fBelt = this.worldObj.getTileEntity(this.xCoord + front.offsetX, this.yCoord + front.offsetY, this.zCoord + front.offsetZ);
-        TileEntity BBelt = this.worldObj.getTileEntity(this.xCoord + back.offsetX, this.yCoord + back.offsetY, this.zCoord + back.offsetZ);
+        TileEntity fBelt = this.worldObj.getTileEntity(
+            this.xCoord + front.offsetX,
+            this.yCoord + front.offsetY,
+            this.zCoord + front.offsetZ
+        );
+        TileEntity BBelt = this.worldObj.getTileEntity(
+            this.xCoord + back.offsetX,
+            this.yCoord + back.offsetY,
+            this.zCoord + back.offsetZ
+        );
         if (fBelt instanceof TileEntityConveyorBelt) {
             ForgeDirection TD;
-            ForgeDirection fD = ((TileEntityConveyorBelt)fBelt).getDirection();
+            ForgeDirection fD = ((TileEntityConveyorBelt) fBelt).getDirection();
             return fD == (TD = this.getDirection());
         }
         return false;
@@ -143,11 +182,20 @@ IRotatable {
     public boolean getIsMiddleBelt() {
         ForgeDirection front = this.getDirection();
         ForgeDirection back = this.getDirection().getOpposite();
-        TileEntity fBelt = this.worldObj.getTileEntity(this.xCoord + front.offsetX, this.yCoord + front.offsetY, this.zCoord + front.offsetZ);
-        TileEntity BBelt = this.worldObj.getTileEntity(this.xCoord + back.offsetX, this.yCoord + back.offsetY, this.zCoord + back.offsetZ);
-        if (fBelt instanceof TileEntityConveyorBelt && BBelt instanceof TileEntityConveyorBelt) {
-            ForgeDirection fD = ((TileEntityConveyorBelt)fBelt).getDirection();
-            ForgeDirection BD = ((TileEntityConveyorBelt)BBelt).getDirection();
+        TileEntity fBelt = this.worldObj.getTileEntity(
+            this.xCoord + front.offsetX,
+            this.yCoord + front.offsetY,
+            this.zCoord + front.offsetZ
+        );
+        TileEntity BBelt = this.worldObj.getTileEntity(
+            this.xCoord + back.offsetX,
+            this.yCoord + back.offsetY,
+            this.zCoord + back.offsetZ
+        );
+        if (fBelt instanceof TileEntityConveyorBelt
+            && BBelt instanceof TileEntityConveyorBelt) {
+            ForgeDirection fD = ((TileEntityConveyorBelt) fBelt).getDirection();
+            ForgeDirection BD = ((TileEntityConveyorBelt) BBelt).getDirection();
             ForgeDirection TD = this.getDirection();
             return fD == TD && BD == TD;
         }
@@ -157,11 +205,19 @@ IRotatable {
     public boolean getIsLastBelt() {
         ForgeDirection front = this.getDirection();
         ForgeDirection back = this.getDirection().getOpposite();
-        TileEntity fBelt = this.worldObj.getTileEntity(this.xCoord + front.offsetX, this.yCoord + front.offsetY, this.zCoord + front.offsetZ);
-        TileEntity BBelt = this.worldObj.getTileEntity(this.xCoord + back.offsetX, this.yCoord + back.offsetY, this.zCoord + back.offsetZ);
+        TileEntity fBelt = this.worldObj.getTileEntity(
+            this.xCoord + front.offsetX,
+            this.yCoord + front.offsetY,
+            this.zCoord + front.offsetZ
+        );
+        TileEntity BBelt = this.worldObj.getTileEntity(
+            this.xCoord + back.offsetX,
+            this.yCoord + back.offsetY,
+            this.zCoord + back.offsetZ
+        );
         if (BBelt instanceof TileEntityConveyorBelt) {
             ForgeDirection TD;
-            ForgeDirection BD = ((TileEntityConveyorBelt)BBelt).getDirection();
+            ForgeDirection BD = ((TileEntityConveyorBelt) BBelt).getDirection();
             return BD == (TD = this.getDirection());
         }
         return false;
@@ -177,39 +233,57 @@ IRotatable {
     }
 
     @Override
-    public void setDirection(World world, int x, int y, int z, ForgeDirection facingDirection) {
-        this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, facingDirection.ordinal(), 3);
+    public void
+    setDirection(World world, int x, int y, int z, ForgeDirection facingDirection) {
+        this.worldObj.setBlockMetadataWithNotify(
+            this.xCoord, this.yCoord, this.zCoord, facingDirection.ordinal(), 3
+        );
     }
 
     @Override
     public ForgeDirection getDirection(IBlockAccess world, int x, int y, int z) {
-        return ForgeDirection.getOrientation((int)this.getBlockMetadata());
+        return ForgeDirection.getOrientation((int) this.getBlockMetadata());
     }
 
     public ForgeDirection getDirection() {
-        return this.getDirection((IBlockAccess)this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+        return this.getDirection(
+            (IBlockAccess) this.worldObj, this.xCoord, this.yCoord, this.zCoord
+        );
     }
 
     public void setDirection(ForgeDirection facingDirection) {
-        this.setDirection(this.worldObj, this.xCoord, this.yCoord, this.zCoord, facingDirection);
+        this.setDirection(
+            this.worldObj, this.xCoord, this.yCoord, this.zCoord, facingDirection
+        );
     }
 
     @Override
     public List getAffectedEntities() {
-        AxisAlignedBB bounds = AxisAlignedBB.getBoundingBox((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, (double)(this.xCoord + 1), (double)(this.yCoord + 1), (double)(this.zCoord + 1));
+        AxisAlignedBB bounds = AxisAlignedBB.getBoundingBox(
+            (double) this.xCoord,
+            (double) this.yCoord,
+            (double) this.zCoord,
+            (double) (this.xCoord + 1),
+            (double) (this.yCoord + 1),
+            (double) (this.zCoord + 1)
+        );
         return this.worldObj.getEntitiesWithinAABB(Entity.class, bounds);
     }
 
     public int getAnimationFrame() {
-        if (!this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord)) {
+        if (!this.worldObj.isBlockIndirectlyGettingPowered(
+                this.xCoord, this.yCoord, this.zCoord
+            )) {
             TileEntity te = null;
             te = this.worldObj.getTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
-            if (te != null && te instanceof TileEntityConveyorBelt && ((TileEntityConveyorBelt)te).getSlant() == this.slantType) {
-                return ((TileEntityConveyorBelt)te).getAnimationFrame();
+            if (te != null && te instanceof TileEntityConveyorBelt
+                && ((TileEntityConveyorBelt) te).getSlant() == this.slantType) {
+                return ((TileEntityConveyorBelt) te).getAnimationFrame();
             }
             te = this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
-            if (te != null && te instanceof TileEntityConveyorBelt && ((TileEntityConveyorBelt)te).getSlant() == this.slantType) {
-                return ((TileEntityConveyorBelt)te).getAnimationFrame();
+            if (te != null && te instanceof TileEntityConveyorBelt
+                && ((TileEntityConveyorBelt) te).getSlant() == this.slantType) {
+                return ((TileEntityConveyorBelt) te).getAnimationFrame();
             }
         }
         return this.animFrame;
@@ -220,22 +294,27 @@ IRotatable {
         super.readFromNBT(nbt);
         this.slantType = SlantType.values()[nbt.getByte("slant")];
         if (this.worldObj != null) {
-            this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, nbt.getInteger("rotation"), 3);
+            this.worldObj.setBlockMetadataWithNotify(
+                this.xCoord, this.yCoord, this.zCoord, nbt.getInteger("rotation"), 3
+            );
         }
     }
 
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
-        nbt.setByte("slant", (byte)this.slantType.ordinal());
+        nbt.setByte("slant", (byte) this.slantType.ordinal());
         if (this.worldObj != null) {
-            nbt.setInteger("rotation", this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
+            nbt.setInteger(
+                "rotation",
+                this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord)
+            );
         }
     }
 
     @Override
     public void IgnoreEntity(Entity entity) {
-        if (!this.IgnoreList.contains((Object)entity)) {
+        if (!this.IgnoreList.contains((Object) entity)) {
             this.IgnoreList.add(entity);
         }
     }
@@ -250,7 +329,5 @@ IRotatable {
         UP,
         DOWN,
         TOP;
-
     }
 }
-

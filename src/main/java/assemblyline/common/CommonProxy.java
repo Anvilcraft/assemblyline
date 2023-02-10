@@ -1,5 +1,11 @@
 package assemblyline.common;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
 import assemblyline.common.block.TileEntityCrate;
 import assemblyline.common.machine.TileEntityManipulator;
 import assemblyline.common.machine.TileEntityRejector;
@@ -15,41 +21,48 @@ import assemblyline.common.machine.imprinter.TileEntityImprinter;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import universalelectricity.prefab.multiblock.TileEntityMulti;
 
-public class CommonProxy
-implements IGuiHandler {
+public class CommonProxy implements IGuiHandler {
     public static final int GUI_IMPRINTER = 1;
     public static final int GUI_ENCODER = 2;
 
-    public void preInit() {
-    }
+    public void preInit() {}
 
     public void init() {
-        GameRegistry.registerTileEntity(TileEntityConveyorBelt.class, (String)"ALConveyorBelt");
-        GameRegistry.registerTileEntity(TileEntityRejector.class, (String)"ALSorter");
-        GameRegistry.registerTileEntity(TileEntityManipulator.class, (String)"ALManipulator");
-        GameRegistry.registerTileEntity(TileEntityCrate.class, (String)"ALCrate");
-        GameRegistry.registerTileEntity(TileEntityDetector.class, (String)"ALDetector");
-        GameRegistry.registerTileEntity(TileEntityEncoder.class, (String)"ALEncoder");
-        GameRegistry.registerTileEntity(TileEntityArmbot.class, (String)"ALArmbot");
-        GameRegistry.registerTileEntity(TileEntityCraneController.class, (String)"ALCraneController");
-        GameRegistry.registerTileEntity(TileEntityCraneRail.class, (String)"ALCraneRail");
-        GameRegistry.registerTileEntity(TileEntityImprinter.class, (String)"ALImprinter");
-        GameRegistry.registerTileEntity(TileEntityMulti.class, (String)"ALMulti");
+        GameRegistry.registerTileEntity(
+            TileEntityConveyorBelt.class, (String) "ALConveyorBelt"
+        );
+        GameRegistry.registerTileEntity(TileEntityRejector.class, (String) "ALSorter");
+        GameRegistry.registerTileEntity(
+            TileEntityManipulator.class, (String) "ALManipulator"
+        );
+        GameRegistry.registerTileEntity(TileEntityCrate.class, (String) "ALCrate");
+        GameRegistry.registerTileEntity(TileEntityDetector.class, (String) "ALDetector");
+        GameRegistry.registerTileEntity(TileEntityEncoder.class, (String) "ALEncoder");
+        GameRegistry.registerTileEntity(TileEntityArmbot.class, (String) "ALArmbot");
+        GameRegistry.registerTileEntity(
+            TileEntityCraneController.class, (String) "ALCraneController"
+        );
+        GameRegistry.registerTileEntity(
+            TileEntityCraneRail.class, (String) "ALCraneRail"
+        );
+        GameRegistry.registerTileEntity(
+            TileEntityImprinter.class, (String) "ALImprinter"
+        );
+        GameRegistry.registerTileEntity(TileEntityMulti.class, (String) "ALMulti");
     }
 
-    private void extractZipToLocation(File zipFile, String sourceFolder, String destFolder) {
+    private void
+    extractZipToLocation(File zipFile, String sourceFolder, String destFolder) {
         try {
-            File destFile = new File(FMLCommonHandler.instance().getMinecraftServerInstance().getFile("."), destFolder);
+            File destFile = new File(
+                FMLCommonHandler.instance().getMinecraftServerInstance().getFile("."),
+                destFolder
+            );
             String destinationName = destFile.getAbsolutePath();
             byte[] buf = new byte[1024];
             ZipInputStream zipinputstream = null;
@@ -62,12 +75,16 @@ implements IGuiHandler {
                     zipentry = zipinputstream.getNextEntry();
                     continue;
                 }
-                String entryName = destinationName + zipentryName.substring(Math.min(zipentryName.length(), sourceFolder.length() - 1));
+                String entryName = destinationName
+                    + zipentryName.substring(
+                        Math.min(zipentryName.length(), sourceFolder.length() - 1)
+                    );
                 entryName = entryName.replace('/', File.separatorChar);
                 entryName = entryName.replace('\\', File.separatorChar);
                 File newFile = new File(entryName);
                 if (zipentry.isDirectory()) {
-                    if (!newFile.mkdirs()) break;
+                    if (!newFile.mkdirs())
+                        break;
                     zipentry = zipinputstream.getNextEntry();
                     continue;
                 }
@@ -80,30 +97,36 @@ implements IGuiHandler {
                 zipentry = zipinputstream.getNextEntry();
             }
             zipinputstream.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Error while loading AssemblyLine Lua libraries: ");
             e.printStackTrace();
         }
     }
 
-    public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    public Object
+    getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (tileEntity != null) {
             switch (ID) {
                 case 1: {
-                    return new ContainerImprinter(player.inventory, (TileEntityImprinter)tileEntity);
+                    return new ContainerImprinter(
+                        player.inventory, (TileEntityImprinter) tileEntity
+                    );
                 }
                 case 2: {
-                    if (tileEntity == null || !(tileEntity instanceof TileEntityEncoder)) break;
-                    return new ContainerEncoder(player.inventory, (TileEntityEncoder)tileEntity);
+                    if (tileEntity == null || !(tileEntity instanceof TileEntityEncoder))
+                        break;
+                    return new ContainerEncoder(
+                        player.inventory, (TileEntityEncoder) tileEntity
+                    );
                 }
             }
         }
         return null;
     }
 
-    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    public Object
+    getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         return null;
     }
 
@@ -111,4 +134,3 @@ implements IGuiHandler {
         return false;
     }
 }
-

@@ -7,17 +7,17 @@ import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 import universalelectricity.core.vector.Vector3;
 
-@SideOnly(value=Side.CLIENT)
-public class RenderDetector
-extends RenderImprintable {
+@SideOnly(value = Side.CLIENT)
+public class RenderDetector extends RenderImprintable {
     @Override
-    public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float var8) {
+    public void
+    renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float var8) {
         super.renderTileEntityAt(tileEntity, x, y, z, var8);
     }
 
     public static void render(boolean isInverted, Vector3 position) { //TODO: WTF
         GL11.glPushMatrix();
-        GL11.glTranslated((double)position.x, (double)position.y, (double)position.z);
+        GL11.glTranslated((double) position.x, (double) position.y, (double) position.z);
         if (isInverted) {
             // empty if block
         }
@@ -35,4 +35,3 @@ extends RenderImprintable {
         GL11.glPopMatrix();
     }
 }
-
