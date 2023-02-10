@@ -1,11 +1,8 @@
 package assemblyline.common;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.logging.Logger;
 
-import assemblyline.common.CommonProxy;
-import assemblyline.common.TabAssemblyLine;
 import assemblyline.common.block.BlockCrate;
 import assemblyline.common.block.BlockTurntable;
 import assemblyline.common.block.ItemBlockCrate;
@@ -24,7 +21,6 @@ import assemblyline.common.machine.imprinter.ItemImprinter;
 import assemblyline.common.network.MessageEncoder;
 import assemblyline.common.network.MessageEncoderHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -37,6 +33,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
+import dan200.computercraft.api.ComputerCraftAPI;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -151,6 +148,8 @@ public class AssemblyLine {
         );
         this.createStandardRecipes();
         this.createUERecipes();
+
+        ComputerCraftAPI.registerPeripheralProvider(new AsseblyLinePeripheralProvider());
     }
 
     private void createUERecipes() {

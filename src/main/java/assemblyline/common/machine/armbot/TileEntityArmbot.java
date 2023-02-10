@@ -6,6 +6,7 @@ import java.util.List;
 
 import assemblyline.api.IArmbot;
 import assemblyline.common.AssemblyLine;
+import assemblyline.common.IAssemblyLinePeripheral;
 import assemblyline.common.machine.TileEntityAssemblyNetwork;
 import assemblyline.common.machine.command.Command;
 import assemblyline.common.machine.command.CommandDrop;
@@ -48,7 +49,8 @@ import universalelectricity.prefab.TranslationHelper;
 import universalelectricity.prefab.multiblock.IMultiBlock;
 
 public class TileEntityArmbot extends TileEntityAssemblyNetwork
-    implements IMultiBlock, IInventory, IElectricityStorage, IArmbot, IPeripheral {
+    implements IMultiBlock, IInventory, IElectricityStorage, IArmbot,
+               IAssemblyLinePeripheral {
     private final CommandManager commandManager = new CommandManager();
     private static final int PACKET_COMMANDS = 128;
     protected ItemStack disk = null;
